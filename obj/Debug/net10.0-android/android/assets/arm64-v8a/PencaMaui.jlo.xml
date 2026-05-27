@@ -1,0 +1,15 @@
+<api>
+  <jcw-types>
+    <type name="MainActivity" package="crc64c435928c3f144451" application_java_class="android.app.Application" mono_runtime_initialization="mono.MonoPackageManager.LoadApplication (context);" extends_type="crc6488302ad6e9e4df1a.MauiAppCompatActivity" partial_assembly_qualified_name="PencaMaui.MainActivity, PencaMaui">
+      <constructors>
+        <constructor name="MainActivity" method="n_.ctor:()V:" jni_signature="()V" managed_parameters="" retval="void" is_dynamically_registered="True" />
+        <constructor name="MainActivity" method="n_.ctor:(I)V:" jni_signature="(I)V" managed_parameters="System.Int32, System.Private.CoreLib" params="int p0" retval="void" is_dynamically_registered="True" super_call="p0" activate_call="p0" />
+      </constructors>
+    </type>
+    <type name="MainApplication" package="crc64c435928c3f144451" application_java_class="android.app.Application" mono_runtime_initialization="mono.MonoPackageManager.LoadApplication (context);" extends_type="crc6488302ad6e9e4df1a.MauiApplication" is_application="True" partial_assembly_qualified_name="PencaMaui.MainApplication, PencaMaui" application_constructor="MainApplication" />
+  </jcw-types>
+  <acw-types partial-assembly-name="PencaMaui" module-name="PencaMaui.dll">
+    <type assembly-qualified-name="PencaMaui.MainActivity, PencaMaui, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" compat-jni-name="pencamaui.MainActivity" java-key="crc64c435928c3f144451.MainActivity" managed-key="PencaMaui.MainActivity" partial-assembly-qualified-name="PencaMaui.MainActivity, PencaMaui" />
+    <type assembly-qualified-name="PencaMaui.MainApplication, PencaMaui, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null" compat-jni-name="pencamaui.MainApplication" java-key="crc64c435928c3f144451.MainApplication" managed-key="PencaMaui.MainApplication" partial-assembly-qualified-name="PencaMaui.MainApplication, PencaMaui" />
+  </acw-types>
+</api>

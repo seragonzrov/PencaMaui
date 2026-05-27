@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="PencaMaui.Views.PosicionesPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:PencaMaui.ViewModels"
+             xmlns:models="clr-namespace:PencaMaui.Models"
+             x:DataType="vm:PosicionesViewModel"
+             Title="{Binding NombrePenca}"
+             BackgroundColor="#F5F5F5">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="16" Spacing="12">
+
+            <!-- Mi posición (card verde) -->
+            <Border BackgroundColor="#E1F5EE" Stroke="#5DCAA5" StrokeThickness="1.5"
+                    StrokeShape="RoundRectangle 12" Padding="16"
+                    IsVisible="{Binding MiPosicion, Converter={StaticResource NullToBoolConverter}}">
+                <Grid ColumnDefinitions="60,*,Auto">
+                    <Label Grid.Column="0" FontSize="30" FontAttributes="Bold"
+                           TextColor="#0F6E56" VerticalOptions="Center">
+                        <Label.FormattedText>
+                            <FormattedString>
+                                <Span Text="{Binding MiPosicion.Posicion}" />
+                                <Span Text="°" FontSize="18" />
+                            </FormattedString>
+                        </Label.FormattedText>
+                    </Label>
+                    <VerticalStackLayout Grid.Column="1" VerticalOptions="Center" Spacing="2">
+                        <Label Text="{Binding MiPosicion.NombreUsuario}"
+                               FontSize="14" FontAttributes="Bold" TextColor="#085041" />
+                        <Label Text="Tu posición actual" FontSize="11" TextColor="#0F6E56" />
+                    </VerticalStackLayout>
+                    <VerticalStackLayout Grid.Column="2" HorizontalOptions="End"
+                                        VerticalOptions="Center">
+                        <Label Text="{Binding MiPosicion.Puntos}" FontSize="24"
+                               FontAttributes="Bold" TextColor="#0F6E56"
+                               HorizontalOptions="End" />
+                        <Label Text="puntos" FontSize="10" TextColor="#1D9E75"
+                               HorizontalOptions="End" />
+                    </VerticalStackLayout>
+                </Grid>
+            </Border>
+
+            <!-- Encabezado tabla -->
+            <Grid ColumnDefinitions="32,36,*,44,44,56" Padding="8,4" BackgroundColor="Transparent">
+                <Label Grid.Column="0" Text="#" FontSize="11" TextColor="#999" FontAttributes="Bold" />
+                <Label Grid.Column="2" Text="Participante" FontSize="11" TextColor="#999" FontAttributes="Bold" />
+                <Label Grid.Column="3" Text="Ac." FontSize="11" TextColor="#999" FontAttributes="Bold" HorizontalOptions="End" />
+                <Label Grid.Column="4" Text="Ex." FontSize="11" TextColor="#999" FontAttributes="Bold" HorizontalOptions="End" />
+                <Label Grid.Column="5" Text="Pts" FontSize="11" TextColor="#999" FontAttributes="Bold" HorizontalOptions="End" />
+            </Grid>
+
+            <!-- Lista posiciones -->
+            <CollectionView ItemsSource="{Binding Posiciones}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:PosicionEntry">
+                        <Grid ColumnDefinitions="32,36,*,44,44,56"
+                              Padding="8,10" BackgroundColor="{Binding ColorFila}">
+
+                            <!-- Posición -->
+                            <Label Grid.Column="0" Text="{Binding Posicion}"
+                                   FontSize="13" FontAttributes="Bold"
+                                   TextColor="{Binding ColorPuntos}"
+                                   VerticalOptions="Center" />
+
+                            <!-- Avatar -->
+                            <Border Grid.Column="1" BackgroundColor="{Binding ColorAvatar}"
+                                    StrokeThickness="0" StrokeShape="RoundRectangle 15"
+                                    WidthRequest="28" HeightRequest="28"
+                                    HorizontalOptions="Start" VerticalOptions="Center">
+                                <Label Text="{Binding Iniciales}" FontSize="10"
+                                       FontAttributes="Bold"
+                                       HorizontalOptions="Center"
+                                       VerticalOptions="Center"
+                                       TextColor="#085041" />
+                            </Border>
+
+                            <!-- Nombre -->
+                            <Label Grid.Column="2" Text="{Binding NombreUsuario}"
+                                   FontSize="13" TextColor="#1A1A1A"
+                                   VerticalOptions="Center"
+                                   FontAttributes="{Binding EsUsuarioActual, Converter={StaticResource BoolToFontAttrConverter}}" />
+
+                            <!-- Aciertos -->
+                            <Label Grid.Column="3" Text="{Binding Aciertos}"
+                                   FontSize="13" TextColor="#666"
+                                   HorizontalOptions="End" VerticalOptions="Center" />
+
+                            <!-- Exactos -->
+                            <Label Grid.Column="4" Text="{Binding Exactos}"
+                                   FontSize="13" TextColor="#666"
+                                   HorizontalOptions="End" VerticalOptions="Center" />
+
+                            <!-- Puntos -->
+                            <Label Grid.Column="5" Text="{Binding Puntos}"
+                                   FontSize="14" FontAttributes="Bold"
+                                   TextColor="{Binding ColorPuntos}"
+                                   HorizontalOptions="End" VerticalOptions="Center" />
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

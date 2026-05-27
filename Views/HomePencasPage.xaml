@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="PencaMaui.Views.HomePencasPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:PencaMaui.ViewModels"
+             xmlns:models="clr-namespace:PencaMaui.Models"
+             x:DataType="vm:HomePencasViewModel"
+             Title="Mis Pencas"
+             BackgroundColor="#F5F5F5">
+
+    <RefreshView Command="{Binding CargarCommand}" IsRefreshing="{Binding IsBusy}">
+        <ScrollView>
+            <VerticalStackLayout Padding="16" Spacing="12">
+
+                <!-- Bienvenida -->
+                <Label Text="{Binding Bienvenida}" FontSize="20"
+                       FontAttributes="Bold" TextColor="#1A1A1A" Margin="0,8,0,0" />
+
+                <!-- Lista de pencas -->
+                <CollectionView ItemsSource="{Binding Pencas}"
+                                EmptyView="No hay pencas disponibles">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="10" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="models:Penca">
+                            <Border BackgroundColor="White" Stroke="#E8E8E8"
+                                    StrokeThickness="1" Padding="16"
+                                    StrokeShape="RoundRectangle 12">
+                                <VerticalStackLayout Spacing="10">
+
+                                    <!-- Nombre + Badge estado -->
+                                    <Grid ColumnDefinitions="*,Auto">
+                                        <Label Grid.Column="0" Text="{Binding Nombre}"
+                                               FontSize="16" FontAttributes="Bold"
+                                               TextColor="#1A1A1A" />
+                                        <Border Grid.Column="1"
+                                                BackgroundColor="{Binding EstadoColor}"
+                                                StrokeShape="RoundRectangle 12"
+                                                StrokeThickness="0" Padding="8,3">
+                                            <Label Text="{Binding EstadoTexto}"
+                                                   FontSize="11" TextColor="White"
+                                                   FontAttributes="Bold" />
+                                        </Border>
+                                    </Grid>
+
+                                    <!-- Monto entrada -->
+                                    <Label FontSize="13" TextColor="#666">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="Inscripción: $" />
+                                                <Span Text="{Binding MontoEntrada}" FontAttributes="Bold" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+
+                                    <!-- Botones -->
+                                    <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
+                                        <Button Grid.Column="0" Text="Predecir"
+                                                BackgroundColor="#1D9E75" TextColor="White"
+                                                CornerRadius="8" HeightRequest="40" FontSize="13"
+                                                CommandParameter="{Binding .}"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:HomePencasViewModel}}, Path=PredecirCommand}" />
+                                        <Button Grid.Column="1" Text="Posiciones"
+                                                BackgroundColor="White" TextColor="#1D9E75"
+                                                BorderColor="#1D9E75" BorderWidth="1"
+                                                CornerRadius="8" HeightRequest="40" FontSize="13"
+                                                CommandParameter="{Binding .}"
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type vm:HomePencasViewModel}}, Path=VerPosicionesCommand}" />
+                                    </Grid>
+
+                                </VerticalStackLayout>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </RefreshView>
+</ContentPage>

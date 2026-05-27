@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="PencaMaui.Views.RegistroPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:PencaMaui.ViewModels"
+             x:DataType="vm:RegistroViewModel"
+             Title="Crear cuenta"
+             BackgroundColor="White">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="24,32" Spacing="16">
+
+            <Label Text="Crear cuenta" FontSize="22"
+                   FontAttributes="Bold" TextColor="#1A1A1A" />
+            <Label Text="Completá tus datos para registrarte"
+                   FontSize="13" TextColor="#666" Margin="0,-8,0,8" />
+
+            <!-- Nombre -->
+            <VerticalStackLayout Spacing="4">
+                <Label Text="Nombre *" FontSize="12" TextColor="#666" />
+                <Border Stroke="#E0E0E0" StrokeThickness="1" StrokeShape="RoundRectangle 8">
+                    <Entry Text="{Binding Nombre}" Placeholder="Tu nombre"
+                           BackgroundColor="White" Margin="8,0" HeightRequest="44" />
+                </Border>
+            </VerticalStackLayout>
+
+            <!-- Email -->
+            <VerticalStackLayout Spacing="4">
+                <Label Text="Email *" FontSize="12" TextColor="#666" />
+                <Border Stroke="#E0E0E0" StrokeThickness="1" StrokeShape="RoundRectangle 8">
+                    <Entry Text="{Binding Email}" Placeholder="tu@email.com"
+                           Keyboard="Email" BackgroundColor="White"
+                           Margin="8,0" HeightRequest="44" />
+                </Border>
+            </VerticalStackLayout>
+
+            <!-- Password -->
+            <VerticalStackLayout Spacing="4">
+                <Label Text="Contraseña *" FontSize="12" TextColor="#666" />
+                <Border Stroke="#E0E0E0" StrokeThickness="1" StrokeShape="RoundRectangle 8">
+                    <Entry Text="{Binding Password}" IsPassword="True"
+                           Placeholder="Mínimo 6 caracteres"
+                           BackgroundColor="White" Margin="8,0" HeightRequest="44" />
+                </Border>
+            </VerticalStackLayout>
+
+            <!-- Código invitación (opcional) -->
+            <VerticalStackLayout Spacing="4">
+                <Label Text="Código de invitación (opcional)" FontSize="12" TextColor="#666" />
+                <Border Stroke="#E0E0E0" StrokeThickness="1" StrokeShape="RoundRectangle 8">
+                    <Entry Text="{Binding CodigoInvitacion}" Placeholder="Si tenés uno"
+                           BackgroundColor="White" Margin="8,0" HeightRequest="44" />
+                </Border>
+            </VerticalStackLayout>
+
+            <!-- Error -->
+            <Label Text="{Binding ErrorMessage}" TextColor="#E53935" FontSize="12"
+                   IsVisible="{Binding ErrorMessage, Converter={StaticResource StringToBoolConverter}}" />
+
+            <!-- Botón registrar -->
+            <Button Text="Crear cuenta" Command="{Binding RegistrarCommand}"
+                    IsEnabled="{Binding IsBusy, Converter={StaticResource InvertBoolConverter}}"
+                    BackgroundColor="#1D9E75" TextColor="White"
+                    CornerRadius="8" HeightRequest="48"
+                    FontAttributes="Bold" FontSize="15" Margin="0,8,0,0" />
+
+            <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"
+                               Color="#1D9E75" HorizontalOptions="Center" />
+
+            <!-- Volver al login -->
+            <HorizontalStackLayout HorizontalOptions="Center" Spacing="4">
+                <Label Text="¿Ya tenés cuenta?" FontSize="13" TextColor="#666" />
+                <Label Text="Iniciá sesión" FontSize="13" TextColor="#0F6E56"
+                       FontAttributes="Bold">
+                    <Label.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding VolverCommand}" />
+                    </Label.GestureRecognizers>
+                </Label>
+            </HorizontalStackLayout>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

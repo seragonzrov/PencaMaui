@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="PencaMaui.Views.PerfilPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:PencaMaui.ViewModels"
+             x:DataType="vm:PerfilViewModel"
+             Title="Mi Perfil"
+             BackgroundColor="#F5F5F5">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="16" Spacing="14">
+
+            <!-- Avatar + nombre -->
+            <Border BackgroundColor="White" Stroke="#E8E8E8" StrokeThickness="1"
+                    StrokeShape="RoundRectangle 12" Padding="16">
+                <HorizontalStackLayout Spacing="14">
+                    <Border BackgroundColor="#9FE1CB" StrokeThickness="0"
+                            StrokeShape="RoundRectangle 30"
+                            WidthRequest="56" HeightRequest="56">
+                        <Label Text="{Binding Iniciales}" FontSize="20"
+                               FontAttributes="Bold" TextColor="#085041"
+                               HorizontalOptions="Center" VerticalOptions="Center" />
+                    </Border>
+                    <VerticalStackLayout VerticalOptions="Center" Spacing="2">
+                        <Label Text="{Binding Nombre}" FontSize="17"
+                               FontAttributes="Bold" TextColor="#1A1A1A" />
+                        <Label Text="{Binding Email}" FontSize="12" TextColor="#666" />
+                    </VerticalStackLayout>
+                </HorizontalStackLayout>
+            </Border>
+
+            <!-- Editar nombre -->
+            <Border BackgroundColor="White" Stroke="#E8E8E8" StrokeThickness="1"
+                    StrokeShape="RoundRectangle 12" Padding="16">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Datos personales" FontSize="14"
+                           FontAttributes="Bold" TextColor="#1A1A1A" />
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Nombre" FontSize="11" TextColor="#999" />
+                        <Border Stroke="#E0E0E0" StrokeThickness="1"
+                                StrokeShape="RoundRectangle 8">
+                            <Entry Text="{Binding Nombre}" BackgroundColor="White"
+                                   Margin="8,0" HeightRequest="44" />
+                        </Border>
+                    </VerticalStackLayout>
+                    <Button Text="Guardar cambios" Command="{Binding GuardarPerfilCommand}"
+                            BackgroundColor="#1D9E75" TextColor="White"
+                            CornerRadius="8" HeightRequest="44" FontSize="14" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Notificaciones -->
+            <Border BackgroundColor="White" Stroke="#E8E8E8" StrokeThickness="1"
+                    StrokeShape="RoundRectangle 12" Padding="16">
+                <VerticalStackLayout Spacing="0">
+                    <Label Text="🔔  Notificaciones" FontSize="14"
+                           FontAttributes="Bold" TextColor="#1A1A1A" Margin="0,0,0,12" />
+
+                    <!-- Recordatorio -->
+                    <Grid ColumnDefinitions="*,Auto" Padding="0,10">
+                        <VerticalStackLayout Grid.Column="0" Spacing="2">
+                            <Label Text="Recordatorio de predicción" FontSize="13" TextColor="#1A1A1A" />
+                            <Label Text="Cuando se acerca el cierre" FontSize="11" TextColor="#999" />
+                        </VerticalStackLayout>
+                        <Switch Grid.Column="1" IsToggled="{Binding NotifRecordatorio}"
+                                OnColor="#1D9E75" />
+                    </Grid>
+                    <BoxView HeightRequest="0.5" BackgroundColor="#F0F0F0" />
+
+                    <!-- Resultado -->
+                    <Grid ColumnDefinitions="*,Auto" Padding="0,10">
+                        <VerticalStackLayout Grid.Column="0" Spacing="2">
+                            <Label Text="Resultado de partido" FontSize="13" TextColor="#1A1A1A" />
+                            <Label Text="Al finalizar cada encuentro" FontSize="11" TextColor="#999" />
+                        </VerticalStackLayout>
+                        <Switch Grid.Column="1" IsToggled="{Binding NotifResultado}"
+                                OnColor="#1D9E75" />
+                    </Grid>
+                    <BoxView HeightRequest="0.5" BackgroundColor="#F0F0F0" />
+
+                    <!-- Resumen semanal -->
+                    <Grid ColumnDefinitions="*,Auto" Padding="0,10">
+                        <VerticalStackLayout Grid.Column="0" Spacing="2">
+                            <Label Text="Resumen semanal" FontSize="13" TextColor="#1A1A1A" />
+                            <Label Text="Posiciones y próximos cruces" FontSize="11" TextColor="#999" />
+                        </VerticalStackLayout>
+                        <Switch Grid.Column="1" IsToggled="{Binding NotifResumenSemanal}"
+                                OnColor="#1D9E75" />
+                    </Grid>
+                    <BoxView HeightRequest="0.5" BackgroundColor="#F0F0F0" />
+
+                    <!-- Push -->
+                    <Grid ColumnDefinitions="*,Auto" Padding="0,10">
+                        <VerticalStackLayout Grid.Column="0" Spacing="2">
+                            <Label Text="Notificaciones push" FontSize="13" TextColor="#1A1A1A" />
+                            <Label Text="En la app móvil" FontSize="11" TextColor="#999" />
+                        </VerticalStackLayout>
+                        <Switch Grid.Column="1" IsToggled="{Binding NotifPush}"
+                                OnColor="#1D9E75" />
+                    </Grid>
+
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Cerrar sesión -->
+            <Button Text="Cerrar sesión" Command="{Binding CerrarSesionCommand}"
+                    BackgroundColor="White" TextColor="#E53935"
+                    BorderColor="#E53935" BorderWidth="1"
+                    CornerRadius="8" HeightRequest="48" FontSize="14"
+                    Margin="0,4,0,24" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

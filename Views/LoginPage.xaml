@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="PencaMaui.Views.LoginPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:PencaMaui.ViewModels"
+             x:DataType="vm:LoginViewModel"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="White">
+
+    <ScrollView>
+        <Grid RowDefinitions="180,*" MinimumHeightRequest="600">
+
+            <!-- Header verde -->
+            <Grid Grid.Row="0" BackgroundColor="#1D9E75" Padding="24,48,24,24">
+                <VerticalStackLayout VerticalOptions="End" Spacing="4">
+                    <Label Text="tupenca.uy" FontSize="28" FontAttributes="Bold"
+                           TextColor="White" />
+                    <Label Text="Competí con tus amigos en cada partido"
+                           FontSize="13" TextColor="#C8F0E4" />
+                </VerticalStackLayout>
+            </Grid>
+
+            <!-- Formulario -->
+            <VerticalStackLayout Grid.Row="1" Padding="24,32" Spacing="16">
+
+                <Label Text="Bienvenido de nuevo" FontSize="22"
+                       FontAttributes="Bold" TextColor="#1A1A1A" />
+                <Label Text="Ingresá a tu cuenta para ver tus pencas"
+                       FontSize="13" TextColor="#666" Margin="0,-8,0,0" />
+
+                <!-- Email -->
+                <VerticalStackLayout Spacing="4">
+                    <Label Text="Email" FontSize="12" TextColor="#666" />
+                    <Border Stroke="#E0E0E0" StrokeThickness="1" StrokeShape="RoundRectangle 8">
+                        <Entry Text="{Binding Email}" Placeholder="tu@email.com"
+                               Keyboard="Email" BackgroundColor="White"
+                               Margin="8,0" HeightRequest="44" />
+                    </Border>
+                </VerticalStackLayout>
+
+                <!-- Contraseña -->
+                <VerticalStackLayout Spacing="4">
+                    <Label Text="Contraseña" FontSize="12" TextColor="#666" />
+                    <Border Stroke="#E0E0E0" StrokeThickness="1" StrokeShape="RoundRectangle 8">
+                        <Entry Text="{Binding Password}" IsPassword="True"
+                               Placeholder="••••••••" BackgroundColor="White"
+                               Margin="8,0" HeightRequest="44" />
+                    </Border>
+                </VerticalStackLayout>
+
+                <!-- Error -->
+                <Label Text="{Binding ErrorMessage}" TextColor="#E53935"
+                       FontSize="12" IsVisible="{Binding ErrorMessage, Converter={StaticResource StringToBoolConverter}}" />
+
+                <!-- Botón Ingresar -->
+                <Button Text="Ingresar" Command="{Binding LoginCommand}"
+                        IsEnabled="{Binding IsBusy, Converter={StaticResource InvertBoolConverter}}"
+                        BackgroundColor="#1D9E75" TextColor="White"
+                        CornerRadius="8" HeightRequest="48"
+                        FontAttributes="Bold" FontSize="15" />
+
+                <!-- Loading -->
+                <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"
+                                   Color="#1D9E75" HorizontalOptions="Center" />
+
+                <!-- Separador -->
+                <Grid ColumnDefinitions="*,Auto,*" VerticalOptions="Center" Margin="0,4">
+                    <BoxView Grid.Column="0" HeightRequest="1" BackgroundColor="#E0E0E0" VerticalOptions="Center" />
+                    <Label Grid.Column="1" Text="o continuá con" FontSize="11"
+                           TextColor="#999" Margin="8,0" />
+                    <BoxView Grid.Column="2" HeightRequest="1" BackgroundColor="#E0E0E0" VerticalOptions="Center" />
+                </Grid>
+
+                <!-- Google -->
+                <Button Text="🔵  Continuar con Google"
+                        Command="{Binding LoginGoogleCommand}"
+                        BackgroundColor="White" TextColor="#333"
+                        BorderColor="#E0E0E0" BorderWidth="1"
+                        CornerRadius="8" HeightRequest="48" FontSize="14" />
+
+                <!-- Registro -->
+                <HorizontalStackLayout HorizontalOptions="Center" Spacing="4" Margin="0,8,0,0">
+                    <Label Text="¿No tenés cuenta?" FontSize="13" TextColor="#666" />
+                    <Label Text="Registrate" FontSize="13" TextColor="#0F6E56"
+                           FontAttributes="Bold">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding IrRegistroCommand}" />
+                        </Label.GestureRecognizers>
+                    </Label>
+                </HorizontalStackLayout>
+
+            </VerticalStackLayout>
+        </Grid>
+    </ScrollView>
+</ContentPage>
