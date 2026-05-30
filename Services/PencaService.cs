@@ -24,8 +24,8 @@ public class PencaService
 
     public async Task<List<PosicionEntry>> ObtenerTablaPosicionesAsync(string pencaId)
     {
-        var result = await _api.GetAsync<List<PosicionEntry>>($"/api/Penca/{pencaId}/tabla-posiciones");
-        return result ?? new List<PosicionEntry>();
+        var result = await _api.GetAsync<TablaPosicionesResponse>($"/api/Penca/{pencaId}/tabla-posiciones");
+        return result?.Posiciones.Select(p => p.ToPosicionEntry()).ToList() ?? new List<PosicionEntry>();
     }
 }
 

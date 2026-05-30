@@ -23,7 +23,7 @@
             <!-- Formulario -->
             <VerticalStackLayout Grid.Row="1" Padding="24,32" Spacing="16">
 
-                <Label Text="Bienvenido de nuevo" FontSize="22"
+                <Label Text="{Binding Saludo}" FontSize="22"
                        FontAttributes="Bold" TextColor="#1A1A1A" />
                 <Label Text="Ingresá a tu cuenta para ver tus pencas"
                        FontSize="13" TextColor="#666" Margin="0,-8,0,0" />

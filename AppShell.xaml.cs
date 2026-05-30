@@ -16,6 +16,8 @@ public partial class AppShell : Shell
 
     public void ResetearTabs()
     {
-        CurrentItem = Items[1];
+        var tabBar = Items.OfType<TabBar>().FirstOrDefault();
+        if (tabBar != null)
+            tabBar.CurrentItem = tabBar.Items[0]; // primera tab = Pencas
     }
 }

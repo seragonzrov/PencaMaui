@@ -96,6 +96,32 @@ public class PosicionEntry
         : Color.FromArgb("#333333");
 }
 
+public class TablaPosicionesResponse
+{
+    public string PencaId { get; set; } = string.Empty;
+    public string NombrePenca { get; set; } = string.Empty;
+    public List<PosicionResponseDto> Posiciones { get; set; } = new();
+}
+
+public class PosicionResponseDto
+{
+    public int Posicion { get; set; }
+    public string UsuarioId { get; set; } = string.Empty;
+    public string NombreUsuario { get; set; } = string.Empty;
+    public int PuntosTotales { get; set; }
+    public int PartidosPredichos { get; set; }
+
+    public PosicionEntry ToPosicionEntry() => new PosicionEntry
+    {
+        Posicion = Posicion,
+        UsuarioId = UsuarioId,
+        NombreUsuario = NombreUsuario,
+        Puntos = PuntosTotales,
+        Aciertos = PartidosPredichos,
+        Exactos = 0
+    };
+}
+
 // ─── Predicción ─────────────────────────────────────────────────────────────
 
 public class PrediccionRequestDto

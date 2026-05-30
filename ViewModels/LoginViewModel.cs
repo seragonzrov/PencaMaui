@@ -37,7 +37,7 @@ public partial class LoginViewModel : ObservableObject
         if (success)
         {
             await Shell.Current.GoToAsync("//home");
-            await Task.Delay(100);
+            //await Task.Delay(100);
             (Shell.Current as AppShell)?.ResetearTabs();
         }
         else
@@ -62,7 +62,7 @@ public partial class LoginViewModel : ObservableObject
                 if (success)
                 {
                     await Shell.Current.GoToAsync("//home");
-                    await Task.Delay(100);
+                    //await Task.Delay(100);
                     (Shell.Current as AppShell)?.ResetearTabs();
                 }
                 else
