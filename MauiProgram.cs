@@ -30,20 +30,18 @@ public static class MauiProgram
         builder.Services.AddSingleton<UsuarioService>();
 
         // ─── ViewModels (Transient) ──────────────────────────────────────────
-        builder.Services.AddTransient<LoginViewModel>();
+        builder.Services.AddTransient<AuthViewModel>();
         builder.Services.AddTransient<HomePencasViewModel>();
         builder.Services.AddTransient<PosicionesViewModel>();
         builder.Services.AddTransient<PrediccionViewModel>();
         builder.Services.AddTransient<PerfilViewModel>();
-        builder.Services.AddTransient<RegistroViewModel>();
 
         // ─── Pages (Transient) ───────────────────────────────────────────────
-        builder.Services.AddTransient<LoginPage>();
+        builder.Services.AddTransient<AuthPage>();
         builder.Services.AddTransient<HomePencasPage>();
         builder.Services.AddTransient<PosicionesPage>();
         builder.Services.AddTransient<PrediccionPage>();
         builder.Services.AddTransient<PerfilPage>();
-        builder.Services.AddTransient<RegistroPage>();
 
 #if DEBUG
         builder.Logging.AddDebug();

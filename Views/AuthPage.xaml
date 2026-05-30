@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="PencaMaui.Views.AuthPage"
+             xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:PencaMaui.ViewModels"
+             x:DataType="vm:AuthViewModel"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="White">
+
+    <!-- Header verde fijo -->
+    <Grid RowDefinitions="180,*">
+        <Grid Grid.Row="0" BackgroundColor="#1D9E75" Padding="24,48,24,24">
+            <VerticalStackLayout VerticalOptions="End" Spacing="4">
+                <Label Text="tupenca.uy" FontSize="28" FontAttributes="Bold" TextColor="White" />
+                <Label Text="Competí con tus amigos en cada partido" FontSize="13" TextColor="#C8F0E4" />
+            </VerticalStackLayout>
+        </Grid>
+
+        <!-- Contenedor de los dos paneles -->
+        <Grid Grid.Row="1" x:Name="PanelContainer" IsClippedToBounds="True">
+
+            <!-- Panel Login -->
+            <ScrollView x:Name="PanelLogin" TranslationX="0">
+                <VerticalStackLayout Padding="24,32" Spacing="16">
+                    <Label Text="{Binding Saludo}" FontSize="22" FontAttributes="Bold" TextColor="#1A1A1A" />
+                    <Label Text="Ingresá a tu cuenta para ver tus pencas" FontSize="13" TextColor="#666" Margin="0,-8,0,0" />
+
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Email" FontSize="12" TextColor="#666" />
+                        <Border Stroke="#E0E0E0" StrokeThickness="1" StrokeShape="RoundRectangle 8">
+                            <Entry Text="{Binding Email}" Placeholder="tu@email.com" Keyboard="Email"
+                                   BackgroundColor="White" TextColor="#1A1A1A" PlaceholderColor="#AAAAAA"
+                                   Margin="8,0" HeightRequest="44" />
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Contraseña" FontSize="12" TextColor="#666" />
+                        <Border Stroke="#E0E0E0" StrokeThickness="1" StrokeShape="RoundRectangle 8">
+                            <Entry Text="{Binding Password}" IsPassword="True" Placeholder="••••••••"
+                                   BackgroundColor="White" TextColor="#1A1A1A" PlaceholderColor="#AAAAAA"
+                                   Margin="8,0" HeightRequest="44" />
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <Label Text="{Binding ErrorMessage}" TextColor="#E53935" FontSize="12"
+                           IsVisible="{Binding ErrorMessage, Converter={StaticResource StringToBoolConverter}}" />
+
+                    <Button Text="Ingresar" Command="{Binding LoginCommand}"
+                            IsEnabled="{Binding IsBusy, Converter={StaticResource InvertBoolConverter}}"
+                            BackgroundColor="#1D9E75" TextColor="White"
+                            CornerRadius="8" HeightRequest="48" FontAttributes="Bold" FontSize="15" />
+
+                    <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"
+                                       Color="#1D9E75" HorizontalOptions="Center" />
+
+                    <Grid ColumnDefinitions="*,Auto,*" VerticalOptions="Center" Margin="0,4">
+                        <BoxView Grid.Column="0" HeightRequest="1" BackgroundColor="#E0E0E0" VerticalOptions="Center" />
+                        <Label Grid.Column="1" Text="o continuá con" FontSize="11" TextColor="#999" Margin="8,0" />
+                        <BoxView Grid.Column="2" HeightRequest="1" BackgroundColor="#E0E0E0" VerticalOptions="Center" />
+                    </Grid>
+
+                    <Button Text="  Continuar con Google" Command="{Binding LoginGoogleCommand}"
+                            BackgroundColor="White" TextColor="#333" BorderColor="#E0E0E0" BorderWidth="1"
+                            CornerRadius="8" HeightRequest="48" FontSize="14"
+                            ImageSource="google_logo.png" ContentLayout="Left,10" />
+
+                    <HorizontalStackLayout HorizontalOptions="Center" Spacing="4" Margin="0,8,0,0">
+                        <Label Text="¿No tenés cuenta?" FontSize="13" TextColor="#666" />
+                        <Label Text="Registrate" FontSize="13" TextColor="#0F6E56" FontAttributes="Bold">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding IrRegistroCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </ScrollView>
+
+            <!-- Panel Registro -->
+            <ScrollView x:Name="PanelRegistro" TranslationX="1000">
+                <VerticalStackLayout Padding="24,32" Spacing="16">
+                    <Label Text="Crear cuenta" FontSize="22" FontAttributes="Bold" TextColor="#1A1A1A" />
+                    <Label Text="Completá tus datos para registrarte" FontSize="13" TextColor="#666" Margin="0,-8,0,8" />
+
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Nombre *" FontSize="12" TextColor="#666" />
+                        <Border Stroke="#E0E0E0" StrokeThickness="1" StrokeShape="RoundRectangle 8">
+                            <Entry Text="{Binding Nombre}" Placeholder="Tu nombre"
+                                   BackgroundColor="White" TextColor="#1A1A1A" PlaceholderColor="#AAAAAA"
+                                   Margin="8,0" HeightRequest="44" />
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Email *" FontSize="12" TextColor="#666" />
+                        <Border Stroke="#E0E0E0" StrokeThickness="1" StrokeShape="RoundRectangle 8">
+                            <Entry Text="{Binding EmailRegistro}" Placeholder="tu@email.com" Keyboard="Email"
+                                   BackgroundColor="White" TextColor="#1A1A1A" PlaceholderColor="#AAAAAA"
+                                   Margin="8,0" HeightRequest="44" />
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Contraseña *" FontSize="12" TextColor="#666" />
+                        <Border Stroke="#E0E0E0" StrokeThickness="1" StrokeShape="RoundRectangle 8">
+                            <Entry Text="{Binding PasswordRegistro}" IsPassword="True"
+                                   Placeholder="Mínimo 6 caracteres"
+                                   BackgroundColor="White" TextColor="#1A1A1A" PlaceholderColor="#AAAAAA"
+                                   Margin="8,0" HeightRequest="44" />
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Código de invitación (opcional)" FontSize="12" TextColor="#666" />
+                        <Border Stroke="#E0E0E0" StrokeThickness="1" StrokeShape="RoundRectangle 8">
+                            <Entry Text="{Binding CodigoInvitacion}" Placeholder=""
+                                   BackgroundColor="White" TextColor="#1A1A1A" PlaceholderColor="#AAAAAA"
+                                   Margin="8,0" HeightRequest="44" />
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <Label Text="{Binding ErrorRegistro}" TextColor="#E53935" FontSize="12"
+                           IsVisible="{Binding ErrorRegistro, Converter={StaticResource StringToBoolConverter}}" />
+
+                    <Button Text="Crear cuenta" Command="{Binding RegistrarCommand}"
+                            IsEnabled="{Binding IsBusy, Converter={StaticResource InvertBoolConverter}}"
+                            BackgroundColor="#1D9E75" TextColor="White"
+                            CornerRadius="8" HeightRequest="48" FontAttributes="Bold" FontSize="15" Margin="0,8,0,0" />
+
+                    <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"
+                                       Color="#1D9E75" HorizontalOptions="Center" />
+
+                    <HorizontalStackLayout HorizontalOptions="Center" Spacing="4">
+                        <Label Text="¿Ya tenés cuenta?" FontSize="13" TextColor="#666" />
+                        <Label Text="Iniciá sesión" FontSize="13" TextColor="#0F6E56" FontAttributes="Bold">
+                            <Label.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding VolverLoginCommand}" />
+                            </Label.GestureRecognizers>
+                        </Label>
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </ScrollView>
+
+        </Grid>
+    </Grid>
+</ContentPage>

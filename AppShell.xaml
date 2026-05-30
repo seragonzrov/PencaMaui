@@ -8,7 +8,7 @@
     <!-- Pantalla Login (sin tabs) -->
     <ShellContent x:Name="LoginShell"
                   Route="login"
-                  ContentTemplate="{DataTemplate views:LoginPage}"
+                  ContentTemplate="{DataTemplate views:AuthPage}"
                   Shell.TabBarIsVisible="False" />
 
     <!-- App principal con tabs -->
