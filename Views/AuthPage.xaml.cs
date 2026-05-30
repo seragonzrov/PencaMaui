@@ -12,7 +12,7 @@ public partial class AuthPage : ContentPage
         vm.MostrarRegistro += AnimarHaciaRegistro;
         vm.MostrarLogin += AnimarHaciaLogin;
         vm.MostrarLoginFlecha += AnimarHaciaLoginFlecha;
-
+    }
     private async void AnimarHaciaRegistro()
     {
         double ancho = Width;
