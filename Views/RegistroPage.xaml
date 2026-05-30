@@ -4,8 +4,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:PencaMaui.ViewModels"
              x:DataType="vm:RegistroViewModel"
-             Title="Crear cuenta"
+             Title=""
              BackgroundColor="White">
+
+    <Shell.BackgroundColor>#1D9E75</Shell.BackgroundColor>
+    <Shell.ForegroundColor>White</Shell.ForegroundColor>
+    <Shell.TitleColor>White</Shell.TitleColor>
 
     <ScrollView>
         <VerticalStackLayout Padding="24,32" Spacing="16">
@@ -20,7 +24,8 @@
                 <Label Text="Nombre *" FontSize="12" TextColor="#666" />
                 <Border Stroke="#E0E0E0" StrokeThickness="1" StrokeShape="RoundRectangle 8">
                     <Entry Text="{Binding Nombre}" Placeholder="Tu nombre"
-                           BackgroundColor="White" Margin="8,0" HeightRequest="44" />
+                           BackgroundColor="White" TextColor="#1A1A1A" PlaceholderColor="#AAAAAA"
+                           Margin="8,0" HeightRequest="44" />
                 </Border>
             </VerticalStackLayout>
 
@@ -29,7 +34,7 @@
                 <Label Text="Email *" FontSize="12" TextColor="#666" />
                 <Border Stroke="#E0E0E0" StrokeThickness="1" StrokeShape="RoundRectangle 8">
                     <Entry Text="{Binding Email}" Placeholder="tu@email.com"
-                           Keyboard="Email" BackgroundColor="White"
+                           Keyboard="Email" BackgroundColor="White" TextColor="#1A1A1A" PlaceholderColor="#AAAAAA"
                            Margin="8,0" HeightRequest="44" />
                 </Border>
             </VerticalStackLayout>
@@ -39,8 +44,9 @@
                 <Label Text="Contraseña *" FontSize="12" TextColor="#666" />
                 <Border Stroke="#E0E0E0" StrokeThickness="1" StrokeShape="RoundRectangle 8">
                     <Entry Text="{Binding Password}" IsPassword="True"
-                           Placeholder="Mínimo 6 caracteres"
-                           BackgroundColor="White" Margin="8,0" HeightRequest="44" />
+                           Placeholder="Mínimo de 6 caracteres"
+                           BackgroundColor="White" TextColor="#1A1A1A" PlaceholderColor="#AAAAAA"
+                           Margin="8,0" HeightRequest="44" />
                 </Border>
             </VerticalStackLayout>
 
@@ -48,8 +54,9 @@
             <VerticalStackLayout Spacing="4">
                 <Label Text="Código de invitación (opcional)" FontSize="12" TextColor="#666" />
                 <Border Stroke="#E0E0E0" StrokeThickness="1" StrokeShape="RoundRectangle 8">
-                    <Entry Text="{Binding CodigoInvitacion}" Placeholder="Si tenés uno"
-                           BackgroundColor="White" Margin="8,0" HeightRequest="44" />
+                    <Entry Text="{Binding CodigoInvitacion}" Placeholder=""
+                           BackgroundColor="White" TextColor="#1A1A1A" PlaceholderColor="#AAAAAA"
+                           Margin="8,0" HeightRequest="44" />
                 </Border>
             </VerticalStackLayout>
 

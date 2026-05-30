@@ -23,7 +23,7 @@
             <!-- Formulario -->
             <VerticalStackLayout Grid.Row="1" Padding="24,32" Spacing="16">
 
-                <Label Text="Bienvenido de nuevo" FontSize="22"
+                <Label Text="{Binding Saludo}" FontSize="22"
                        FontAttributes="Bold" TextColor="#1A1A1A" />
                 <Label Text="Ingresá a tu cuenta para ver tus pencas"
                        FontSize="13" TextColor="#666" Margin="0,-8,0,0" />
@@ -34,6 +34,7 @@
                     <Border Stroke="#E0E0E0" StrokeThickness="1" StrokeShape="RoundRectangle 8">
                         <Entry Text="{Binding Email}" Placeholder="tu@email.com"
                                Keyboard="Email" BackgroundColor="White"
+                               TextColor="#1A1A1A" PlaceholderColor="#AAAAAA"
                                Margin="8,0" HeightRequest="44" />
                     </Border>
                 </VerticalStackLayout>
@@ -44,6 +45,7 @@
                     <Border Stroke="#E0E0E0" StrokeThickness="1" StrokeShape="RoundRectangle 8">
                         <Entry Text="{Binding Password}" IsPassword="True"
                                Placeholder="••••••••" BackgroundColor="White"
+                               TextColor="#1A1A1A" PlaceholderColor="#AAAAAA"
                                Margin="8,0" HeightRequest="44" />
                     </Border>
                 </VerticalStackLayout>
@@ -72,11 +74,13 @@
                 </Grid>
 
                 <!-- Google -->
-                <Button Text="🔵  Continuar con Google"
+                <Button Text="  Continuar con Google"
                         Command="{Binding LoginGoogleCommand}"
                         BackgroundColor="White" TextColor="#333"
                         BorderColor="#E0E0E0" BorderWidth="1"
-                        CornerRadius="8" HeightRequest="48" FontSize="14" />
+                        CornerRadius="8" HeightRequest="48" FontSize="14"
+                        ImageSource="google_logo.png"
+                        ContentLayout="Left,10" />
 
                 <!-- Registro -->
                 <HorizontalStackLayout HorizontalOptions="Center" Spacing="4" Margin="0,8,0,0">

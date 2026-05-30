@@ -1,4 +1,5 @@
 using PencaMaui.Models;
+using System.Text.Json;
 
 namespace PencaMaui.Services;
 
@@ -15,24 +16,15 @@ public class AuthService
         _api = api;
     }
 
-   /* public async Task<(bool success, string error)> LoginAsync(string email, string password)
-   {
+    public async Task<(bool success, string error)> LoginAsync(string email, string password)
+    {
         var dto = new LoginRequestDto { Email = email, Password = password };
         var result = await _api.PostAsync<AuthResponse>("/api/Auth/login", dto);
 
         if (result == null || string.IsNullOrEmpty(result.Token))
             return (false, "Email o contraseña incorrectos");
 
-        await GuardarSesionAsync(result);
-        return (true, string.Empty);
-    }*/
-    public async Task<(bool success, string error)> LoginAsync(string email, string password)
-    {
-        await Task.Delay(500);
-        await SecureStorage.SetAsync(TokenKey, "mock_token");
-        await SecureStorage.SetAsync(UserIdKey, "1");
-        await SecureStorage.SetAsync(UserNombreKey, "Jose Garcia");
-        await SecureStorage.SetAsync(UserEmailKey, email);
+        await GuardarSesionAsync(result, email);
         return (true, string.Empty);
     }
 
@@ -65,23 +57,70 @@ public class AuthService
         if (result == null || string.IsNullOrEmpty(result.Token))
             return (false, "Error al registrar usuario");
 
-        await GuardarSesionAsync(result);
+        await GuardarSesionAsync(result, email);
         return (true, string.Empty);
     }
 
-    private async Task GuardarSesionAsync(AuthResponse auth)
+    private async Task GuardarSesionAsync(AuthResponse auth, string? emailOverride = null)
     {
+        var (id, emailFromJwt) = ParseJwt(auth.Token);
+        var email = emailOverride ?? emailFromJwt;
+
         await SecureStorage.SetAsync(TokenKey, auth.Token);
-        await SecureStorage.SetAsync(UserIdKey, auth.Id);
+        await SecureStorage.SetAsync(UserIdKey, id);
         await SecureStorage.SetAsync(UserNombreKey, auth.Nombre);
-        await SecureStorage.SetAsync(UserEmailKey, auth.Email);
+        await SecureStorage.SetAsync(UserEmailKey, email);
         _api.SetToken(auth.Token);
+    }
+
+    private (string id, string email) ParseJwt(string token)
+    {
+        try
+        {
+            var parts = token.Split('.');
+            if (parts.Length != 3) return ("", "");
+            var payload = parts[1];
+            payload = payload.PadRight(payload.Length + (4 - payload.Length % 4) % 4, '=');
+            var json = System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(payload));
+            using var doc = JsonDocument.Parse(json);
+            var root = doc.RootElement;
+            var id = root.TryGetProperty("sub", out var sub) ? sub.GetString() ?? "" : "";
+            var email = root.TryGetProperty("email", out var em) ? em.GetString() ?? "" : "";
+            return (id, email);
+        }
+        catch
+        {
+            return ("", "");
+        }
     }
 
     public async Task<bool> CargarSesionAsync()
     {
         var token = await SecureStorage.GetAsync(TokenKey);
         if (string.IsNullOrEmpty(token)) return false;
+
+        var (id, _) = ParseJwt(token);
+        if (string.IsNullOrEmpty(id)) return false;
+
+        // Verificar expiración
+        try
+        {
+            var parts = token.Split('.');
+            var payload = parts[1].PadRight(parts[1].Length + (4 - parts[1].Length % 4) % 4, '=');
+            var json = System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(payload));
+            using var doc = JsonDocument.Parse(json);
+            if (doc.RootElement.TryGetProperty("exp", out var exp))
+            {
+                var expTime = DateTimeOffset.FromUnixTimeSeconds(exp.GetInt64());
+                if (expTime < DateTimeOffset.UtcNow)
+                {
+                    await LogoutAsync();
+                    return false;
+                }
+            }
+        }
+        catch { }
+
         _api.SetToken(token);
         return true;
     }
@@ -111,5 +150,9 @@ public class AuthService
     {
         var token = await SecureStorage.GetAsync(TokenKey);
         return !string.IsNullOrEmpty(token);
+    }
+    public async Task ActualizarNombreAsync(string nombre)
+    {
+        await SecureStorage.SetAsync(UserNombreKey, nombre);
     }
 }

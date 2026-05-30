@@ -26,9 +26,8 @@ public class AuthResponse
 {
     public string Token { get; set; } = string.Empty;
     public string Nombre { get; set; } = string.Empty;
-    public string Email { get; set; } = string.Empty;
-    public string Id { get; set; } = string.Empty;
-    public int Rol { get; set; }
+    public string Rol { get; set; } = string.Empty;
+    public DateTime Expira { get; set; }
 }
 
 // ─── Penca ──────────────────────────────────────────────────────────────────
@@ -97,6 +96,32 @@ public class PosicionEntry
         : Color.FromArgb("#333333");
 }
 
+public class TablaPosicionesResponse
+{
+    public string PencaId { get; set; } = string.Empty;
+    public string NombrePenca { get; set; } = string.Empty;
+    public List<PosicionResponseDto> Posiciones { get; set; } = new();
+}
+
+public class PosicionResponseDto
+{
+    public int Posicion { get; set; }
+    public string UsuarioId { get; set; } = string.Empty;
+    public string NombreUsuario { get; set; } = string.Empty;
+    public int PuntosTotales { get; set; }
+    public int PartidosPredichos { get; set; }
+
+    public PosicionEntry ToPosicionEntry() => new PosicionEntry
+    {
+        Posicion = Posicion,
+        UsuarioId = UsuarioId,
+        NombreUsuario = NombreUsuario,
+        Puntos = PuntosTotales,
+        Aciertos = PartidosPredichos,
+        Exactos = 0
+    };
+}
+
 // ─── Predicción ─────────────────────────────────────────────────────────────
 
 public class PrediccionRequestDto
@@ -137,6 +162,32 @@ public class Prediccion
         : (CierrePrediccion.HasValue && (CierrePrediccion.Value - DateTime.Now).TotalMinutes < 60)
             ? Color.FromArgb("#993C1D")
             : Color.FromArgb("#555555");
+}
+
+public class PrediccionResponseDto
+{
+    public string Id { get; set; } = string.Empty;
+    public string PartidoId { get; set; } = string.Empty;
+    public string EquipoLocal { get; set; } = string.Empty;
+    public string EquipoVisitante { get; set; } = string.Empty;
+    public int GolesLocal { get; set; }
+    public int GolesVisitante { get; set; }
+    public DateTime FechaPartido { get; set; }
+
+    public Prediccion ToPrediccion(string pencaId) => new Prediccion
+    {
+        Id = Id,
+        PencaId = pencaId,
+        GolesLocal = GolesLocal,
+        GolesVisitante = GolesVisitante,
+        CierrePrediccion = FechaPartido,
+        Partido = new Partido
+        {
+            Id = PartidoId,
+            EquipoLocal = new Equipo { Nombre = EquipoLocal },
+            EquipoVisitante = new Equipo { Nombre = EquipoVisitante }
+        }
+    };
 }
 
 // ─── Partido ────────────────────────────────────────────────────────────────

@@ -13,4 +13,11 @@ public partial class AppShell : Shell
         Routing.RegisterRoute("prediccion", typeof(PrediccionPage));
         Routing.RegisterRoute("registro", typeof(RegistroPage));
     }
+
+    public void ResetearTabs()
+    {
+        var tabBar = Items.OfType<TabBar>().FirstOrDefault();
+        if (tabBar != null)
+            tabBar.CurrentItem = tabBar.Items[0]; // primera tab = Pencas
+    }
 }

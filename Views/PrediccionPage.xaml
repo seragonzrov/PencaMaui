@@ -7,6 +7,9 @@
              x:DataType="vm:PrediccionViewModel"
              Title="{Binding NombrePenca}"
              BackgroundColor="#F5F5F5">
+             <Shell.BackgroundColor>#1D9E75</Shell.BackgroundColor>
+             <Shell.ForegroundColor>White</Shell.ForegroundColor>
+             <Shell.TitleColor>White</Shell.TitleColor>
 
     <Grid RowDefinitions="*,Auto">
 

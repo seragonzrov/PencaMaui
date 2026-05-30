@@ -7,7 +7,9 @@ namespace PencaMaui.ViewModels;
 public partial class LoginViewModel : ObservableObject
 {
     private readonly AuthService _auth;
+    private static bool _yaHuboSesion = false;
 
+    [ObservableProperty] string saludo = "Bienvenido";
     [ObservableProperty] string email = string.Empty;
     [ObservableProperty] string password = string.Empty;
     [ObservableProperty] bool isBusy;
@@ -16,6 +18,9 @@ public partial class LoginViewModel : ObservableObject
     public LoginViewModel(AuthService auth)
     {
         _auth = auth;
+        Saludo = _yaHuboSesion ? "Bienvenido de nuevo" : "Bienvenido";
+        _yaHuboSesion = true;
+        ErrorMessage = string.Empty;
     }
 
     [RelayCommand]
@@ -35,7 +40,11 @@ public partial class LoginViewModel : ObservableObject
         IsBusy = false;
 
         if (success)
+        {
             await Shell.Current.GoToAsync("//home");
+            //await Task.Delay(100);
+            (Shell.Current as AppShell)?.ResetearTabs();
+        }
         else
             ErrorMessage = error;
     }
@@ -56,7 +65,11 @@ public partial class LoginViewModel : ObservableObject
             {
                 var (success, error) = await _auth.LoginFirebaseAsync(idToken);
                 if (success)
+                {
                     await Shell.Current.GoToAsync("//home");
+                    //await Task.Delay(100);
+                    (Shell.Current as AppShell)?.ResetearTabs();
+                }
                 else
                     ErrorMessage = error;
             }

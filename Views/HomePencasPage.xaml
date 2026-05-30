@@ -24,7 +24,7 @@
                     </CollectionView.ItemsLayout>
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="models:Penca">
-                            <Border BackgroundColor="White" Stroke="#E8E8E8"
+                            <Border BackgroundColor="#F0FAF7" Stroke="#E8E8E8"
                                     StrokeThickness="1" Padding="16"
                                     StrokeShape="RoundRectangle 12">
                                 <VerticalStackLayout Spacing="10">
