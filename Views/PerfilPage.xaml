@@ -11,7 +11,7 @@
         <VerticalStackLayout Padding="16" Spacing="14">
 
             <!-- Avatar + nombre -->
-            <Border BackgroundColor="White" Stroke="#E8E8E8" StrokeThickness="1"
+            <Border BackgroundColor="#F0FAF7" Stroke="#E8E8E8" StrokeThickness="1"
                     StrokeShape="RoundRectangle 12" Padding="16">
                 <HorizontalStackLayout Spacing="14">
                     <Border BackgroundColor="#9FE1CB" StrokeThickness="0"
@@ -30,15 +30,16 @@
             </Border>
 
             <!-- Editar nombre -->
-            <Border BackgroundColor="White" Stroke="#E8E8E8" StrokeThickness="1"
+            <Border BackgroundColor="#F0FAF7" Stroke="#E8E8E8" StrokeThickness="1"
                     StrokeShape="RoundRectangle 12" Padding="16">
                 <VerticalStackLayout Spacing="12">
                     <Label Text="Datos personales" FontSize="14"
                            FontAttributes="Bold" TextColor="#1A1A1A" />
                     <VerticalStackLayout Spacing="4">
                         <Label Text="Nombre" FontSize="11" TextColor="#999" />
-                        <Border Stroke="#E0E0E0" StrokeThickness="1"
-                                StrokeShape="RoundRectangle 8">
+                        <Border Stroke="#E8E8E8" StrokeThickness="1"
+                                StrokeShape="RoundRectangle 8"
+                                BackgroundColor="White">
                             <Entry Text="{Binding Nombre}" BackgroundColor="White"
                                 TextColor="#1A1A1A" PlaceholderColor="#AAAAAA"
                                 Margin="8,0" HeightRequest="44" />
@@ -51,7 +52,7 @@
             </Border>
 
             <!-- Notificaciones -->
-            <Border BackgroundColor="White" Stroke="#E8E8E8" StrokeThickness="1"
+            <Border BackgroundColor="#F0FAF7" Stroke="#E8E8E8" StrokeThickness="1"
                     StrokeShape="RoundRectangle 12" Padding="16">
                 <VerticalStackLayout Spacing="0">
                     <Label Text="🔔  Notificaciones" FontSize="14"
@@ -105,7 +106,7 @@
 
             <!-- Cerrar sesión -->
             <Button Text="Cerrar sesión" Command="{Binding CerrarSesionCommand}"
-                    BackgroundColor="White" TextColor="#E53935"
+                    BackgroundColor="#E53935" TextColor="White"
                     BorderColor="#E53935" BorderWidth="1"
                     CornerRadius="8" HeightRequest="48" FontSize="14"
                     Margin="0,4,0,24" />

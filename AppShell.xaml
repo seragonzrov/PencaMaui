@@ -15,6 +15,7 @@
     <TabBar x:Name="MainTabBar" Route="home">
         <ShellContent Title="Pencas"
                       Route="pencas"
+                      Shell.NavBarIsVisible="False"
                       ContentTemplate="{DataTemplate views:HomePencasPage}">
             <ShellContent.Icon>
                 <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe837;" Color="#1D9E75" Size="24" />
@@ -22,6 +23,7 @@
         </ShellContent>
         <ShellContent Title="Perfil"
                       Route="perfil"
+                      Shell.NavBarIsVisible="False"
                       ContentTemplate="{DataTemplate views:PerfilPage}">
             <ShellContent.Icon>
                 <FontImageSource FontFamily="MaterialIcons" Glyph="&#xe7fd;" Color="#1D9E75" Size="24" />

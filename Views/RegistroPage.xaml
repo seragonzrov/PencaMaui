@@ -4,8 +4,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:vm="clr-namespace:PencaMaui.ViewModels"
              x:DataType="vm:RegistroViewModel"
-             Title="Crear cuenta"
+             Title=""
              BackgroundColor="White">
+
+    <Shell.BackgroundColor>#1D9E75</Shell.BackgroundColor>
+    <Shell.ForegroundColor>White</Shell.ForegroundColor>
+    <Shell.TitleColor>White</Shell.TitleColor>
 
     <ScrollView>
         <VerticalStackLayout Padding="24,32" Spacing="16">
