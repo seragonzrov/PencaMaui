@@ -7,7 +7,9 @@ namespace PencaMaui.ViewModels;
 public partial class LoginViewModel : ObservableObject
 {
     private readonly AuthService _auth;
+    private static bool _yaHuboSesion = false;
 
+    [ObservableProperty] string saludo = "Bienvenido";
     [ObservableProperty] string email = string.Empty;
     [ObservableProperty] string password = string.Empty;
     [ObservableProperty] bool isBusy;
@@ -16,6 +18,8 @@ public partial class LoginViewModel : ObservableObject
     public LoginViewModel(AuthService auth)
     {
         _auth = auth;
+        Saludo = _yaHuboSesion ? "Bienvenido de nuevo" : "Bienvenido";
+        _yaHuboSesion = true;
     }
 
     [RelayCommand]

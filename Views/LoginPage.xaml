@@ -74,11 +74,13 @@
                 </Grid>
 
                 <!-- Google -->
-                <Button Text="🔵  Continuar con Google"
+                <Button Text="  Continuar con Google"
                         Command="{Binding LoginGoogleCommand}"
                         BackgroundColor="White" TextColor="#333"
                         BorderColor="#E0E0E0" BorderWidth="1"
-                        CornerRadius="8" HeightRequest="48" FontSize="14" />
+                        CornerRadius="8" HeightRequest="48" FontSize="14"
+                        ImageSource="google_logo.png"
+                        ContentLayout="Left,10" />
 
                 <!-- Registro -->
                 <HorizontalStackLayout HorizontalOptions="Center" Spacing="4" Margin="0,8,0,0">
