@@ -49,7 +49,7 @@ public partial class RegistroViewModel : ObservableObject
     [RelayCommand]
     async Task VolverAsync()
     {
-        await Shell.Current.GoToAsync("..");
+        await Shell.Current.Navigation.PopAsync();
     }
 
 }
