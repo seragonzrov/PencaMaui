@@ -15,8 +15,8 @@ public class AuthService
         _api = api;
     }
 
-   /* public async Task<(bool success, string error)> LoginAsync(string email, string password)
-   {
+    public async Task<(bool success, string error)> LoginAsync(string email, string password)
+    {
         var dto = new LoginRequestDto { Email = email, Password = password };
         var result = await _api.PostAsync<AuthResponse>("/api/Auth/login", dto);
 
@@ -24,15 +24,6 @@ public class AuthService
             return (false, "Email o contraseña incorrectos");
 
         await GuardarSesionAsync(result);
-        return (true, string.Empty);
-    }*/
-    public async Task<(bool success, string error)> LoginAsync(string email, string password)
-    {
-        await Task.Delay(500);
-        await SecureStorage.SetAsync(TokenKey, "mock_token");
-        await SecureStorage.SetAsync(UserIdKey, "1");
-        await SecureStorage.SetAsync(UserNombreKey, "Jose Garcia");
-        await SecureStorage.SetAsync(UserEmailKey, email);
         return (true, string.Empty);
     }
 

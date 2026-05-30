@@ -1,0 +1,12 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "C#: PencaMaui [Samsung SM-G980F]",
+            "type": "dotnet",
+            "request": "launch",
+            "projectPath": "${workspaceFolder}/PencaMaui.csproj",
+            "target": "adb-RF8N21JT7VT-8Lbg1x._adb-tls-connect._tcp"
+        }
+    ]
+}

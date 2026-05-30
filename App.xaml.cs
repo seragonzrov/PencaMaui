@@ -10,7 +10,11 @@ public partial class App : Application
     {
         InitializeComponent();
         _auth = auth;
-        MainPage = new AppShell();
+    }
+
+    protected override Window CreateWindow(IActivationState? activationState)
+    {
+        return new Window(new AppShell());
     }
 
     protected override async void OnStart()

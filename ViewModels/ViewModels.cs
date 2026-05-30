@@ -181,7 +181,7 @@ public partial class PerfilViewModel : ObservableObject
     [RelayCommand]
     async Task CerrarSesionAsync()
     {
-        bool confirmar = await Shell.Current.DisplayAlert(
+        bool confirmar = await Shell.Current.DisplayAlertAsync(
             "Cerrar sesión", "¿Seguro que querés salir?", "Sí", "Cancelar");
 
         if (confirmar)
@@ -202,8 +202,8 @@ public partial class PerfilViewModel : ObservableObject
         IsBusy = false;
 
         if (ok)
-            await Shell.Current.DisplayAlert("Perfil", "Cambios guardados", "OK");
+            await Shell.Current.DisplayAlertAsync("Perfil", "Cambios guardados", "OK");
         else
-            await Shell.Current.DisplayAlert("Error", "No se pudo guardar", "OK");
+            await Shell.Current.DisplayAlertAsync("Error", "No se pudo guardar", "OK");
     }
 }
