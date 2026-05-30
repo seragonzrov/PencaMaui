@@ -202,7 +202,10 @@ public partial class PerfilViewModel : ObservableObject
         IsBusy = false;
 
         if (ok)
+        {
+            await _auth.ActualizarNombreAsync(Nombre);
             await Shell.Current.DisplayAlertAsync("Perfil", "Cambios guardados", "OK");
+        }
         else
             await Shell.Current.DisplayAlertAsync("Error", "No se pudo guardar", "OK");
     }

@@ -34,6 +34,7 @@
                     <Border Stroke="#E0E0E0" StrokeThickness="1" StrokeShape="RoundRectangle 8">
                         <Entry Text="{Binding Email}" Placeholder="tu@email.com"
                                Keyboard="Email" BackgroundColor="White"
+                               TextColor="#1A1A1A" PlaceholderColor="#AAAAAA"
                                Margin="8,0" HeightRequest="44" />
                     </Border>
                 </VerticalStackLayout>
@@ -44,6 +45,7 @@
                     <Border Stroke="#E0E0E0" StrokeThickness="1" StrokeShape="RoundRectangle 8">
                         <Entry Text="{Binding Password}" IsPassword="True"
                                Placeholder="••••••••" BackgroundColor="White"
+                               TextColor="#1A1A1A" PlaceholderColor="#AAAAAA"
                                Margin="8,0" HeightRequest="44" />
                     </Border>
                 </VerticalStackLayout>

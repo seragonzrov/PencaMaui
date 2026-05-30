@@ -19,6 +19,7 @@ public static class MauiProgram
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
+                fonts.AddFont("MaterialIcons-Regular.ttf", "MaterialIcons");
             });
 
         // ─── Services (Singleton) ────────────────────────────────────────────
@@ -47,6 +48,15 @@ public static class MauiProgram
 #if DEBUG
         builder.Logging.AddDebug();
 #endif
+
+        // ─── Quitar subrayado nativo de Entry en Android ─────────────────────
+        Microsoft.Maui.Handlers.EntryHandler.Mapper.AppendToMapping("NoUnderline", (handler, view) =>
+        {
+        #if ANDROID
+            handler.PlatformView.BackgroundTintList =
+                Android.Content.Res.ColorStateList.ValueOf(Android.Graphics.Color.Transparent);
+        #endif
+        });
 
         return builder.Build();
     }

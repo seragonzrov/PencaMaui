@@ -13,4 +13,9 @@ public partial class AppShell : Shell
         Routing.RegisterRoute("prediccion", typeof(PrediccionPage));
         Routing.RegisterRoute("registro", typeof(RegistroPage));
     }
+
+    public void ResetearTabs()
+    {
+        CurrentItem = Items[1];
+    }
 }
