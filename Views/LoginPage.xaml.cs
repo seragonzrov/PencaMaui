@@ -9,4 +9,26 @@ public partial class LoginPage : ContentPage
         InitializeComponent();
         BindingContext = vm;
     }
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        if (BindingContext is LoginViewModel vm)
+            vm.ErrorMessage = string.Empty;
+        if (Window != null)
+            Window.Resumed += OnResumed;
+    }
+
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+        if (Window != null)
+            Window.Resumed -= OnResumed;
+    }
+
+    private void OnResumed(object? sender, EventArgs e)
+    {
+        if (BindingContext is LoginViewModel vm)
+            vm.ErrorMessage = string.Empty;
+    }
 }

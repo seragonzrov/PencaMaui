@@ -20,6 +20,7 @@ public partial class LoginViewModel : ObservableObject
         _auth = auth;
         Saludo = _yaHuboSesion ? "Bienvenido de nuevo" : "Bienvenido";
         _yaHuboSesion = true;
+        ErrorMessage = string.Empty;
     }
 
     [RelayCommand]

@@ -51,4 +51,5 @@ public partial class RegistroViewModel : ObservableObject
     {
         await Shell.Current.GoToAsync("..");
     }
+
 }
