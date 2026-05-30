@@ -26,6 +26,7 @@ public partial class AuthViewModel : ObservableObject
 
     public event Action? MostrarRegistro;
     public event Action? MostrarLogin;
+    public event Action? MostrarLoginFlecha;
 
     public AuthViewModel(AuthService auth)
     {
@@ -107,6 +108,13 @@ public partial class AuthViewModel : ObservableObject
     {
         ErrorRegistro = string.Empty;
         MostrarLogin?.Invoke();
+    }
+
+    [RelayCommand]
+    void VolverLoginFlecha()
+    {
+        ErrorRegistro = string.Empty;
+        MostrarLoginFlecha?.Invoke();
     }
 
     [RelayCommand]

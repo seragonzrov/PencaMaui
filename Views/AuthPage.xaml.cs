@@ -11,7 +11,7 @@ public partial class AuthPage : ContentPage
 
         vm.MostrarRegistro += AnimarHaciaRegistro;
         vm.MostrarLogin += AnimarHaciaLogin;
-    }
+        vm.MostrarLoginFlecha += AnimarHaciaLoginFlecha;
 
     private async void AnimarHaciaRegistro()
     {
@@ -30,6 +30,16 @@ public partial class AuthPage : ContentPage
         await Task.WhenAll(
             PanelLogin.TranslateTo(0, 0, 300, Easing.CubicInOut),
             PanelRegistro.TranslateTo(-ancho, 0, 300, Easing.CubicInOut)
+        );
+    }
+
+    private async void AnimarHaciaLoginFlecha()
+    {
+        double ancho = Width;
+        PanelLogin.TranslationX = -ancho;
+        await Task.WhenAll(
+            PanelLogin.TranslateTo(0, 0, 300, Easing.CubicInOut),
+            PanelRegistro.TranslateTo(ancho, 0, 300, Easing.CubicInOut)
         );
     }
 
