@@ -19,10 +19,17 @@ public class AuthService
     public async Task<(bool success, string error)> LoginAsync(string email, string password)
     {
         var dto = new LoginRequestDto { Email = email, Password = password };
-        var result = await _api.PostAsync<AuthResponse>("/api/Auth/login", dto);
+        var (result, statusCode, errorMsg) = await _api.PostDetailedAsync<AuthResponse>("/api/Auth/login", dto);
 
         if (result == null || string.IsNullOrEmpty(result.Token))
-            return (false, "Email o contraseña incorrectos");
+        {
+            return statusCode switch
+            {
+                400 or 401 => (false, "Email o contraseña incorrectos"),
+                0           => (false, "No se pudo conectar al servidor. Verificá tu conexión a internet."),
+                _           => (false, "El servidor tardó en responder. Intentá de nuevo en unos segundos.")
+            };
+        }
 
         await GuardarSesionAsync(result, email);
         return (true, string.Empty);
@@ -31,10 +38,10 @@ public class AuthService
     public async Task<(bool success, string error)> LoginFirebaseAsync(string idToken)
     {
         var dto = new FirebaseLoginRequest { IdToken = idToken };
-        var result = await _api.PostAsync<AuthResponse>("/api/Auth/firebase", dto);
+        var (result, statusCode, error) = await _api.PostDetailedAsync<AuthResponse>("/api/Auth/firebase", dto);
 
         if (result == null || string.IsNullOrEmpty(result.Token))
-            return (false, "Error al autenticar con red social");
+            return (false, $"Error al autenticar con red social ({statusCode}: {error})");
 
         await GuardarSesionAsync(result);
         return (true, string.Empty);

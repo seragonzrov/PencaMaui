@@ -1,6 +1,7 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using PencaMaui.Services;
+using Plugin.Firebase.Auth.Google;
 
 namespace PencaMaui.ViewModels;
 
@@ -52,32 +53,34 @@ public partial class LoginViewModel : ObservableObject
     [RelayCommand]
     async Task LoginGoogleAsync()
     {
-        // WebAuthenticator para OAuth con Google via Firebase
         try
         {
             IsBusy = true;
-            var authUrl = new Uri("https://tupenca-api-production-ed1d.up.railway.app/api/Auth/google");
-            var callbackUrl = new Uri("tupenca://callback");
+            ErrorMessage = string.Empty;
 
-            var result = await WebAuthenticator.Default.AuthenticateAsync(authUrl, callbackUrl);
+    #if ANDROID
+            // SignInWithGoogleAsync hace el login nativo de Google Y el intercambio
+            // de credencial con Firebase en un solo paso, devolviendo el usuario de Firebase
+            // (el backend valida tokens de Firebase, igual que en la versión web)
+            var firebaseUser = await CrossFirebaseAuthGoogle.Current.SignInWithGoogleAsync();
+            var tokenResult = await firebaseUser.GetIdTokenResultAsync(false);
+            var firebaseIdToken = tokenResult.Token;
 
-            if (result.Properties.TryGetValue("token", out var idToken))
+            var (success, error) = await _auth.LoginFirebaseAsync(firebaseIdToken);
+            if (success)
             {
-                var (success, error) = await _auth.LoginFirebaseAsync(idToken);
-                if (success)
-                {
-                    await Shell.Current.GoToAsync("//home");
-                    //await Task.Delay(100);
-                    (Shell.Current as AppShell)?.ResetearTabs();
-                }
-                else
-                    ErrorMessage = error;
+                await Shell.Current.GoToAsync("//home");
+                await Task.Delay(100);
+                (Shell.Current as AppShell)?.ResetearTabs();
             }
+            else
+                ErrorMessage = error;
+    #endif
         }
         catch (Exception ex)
         {
-            ErrorMessage = "Error al iniciar sesión con Google";
-            Console.WriteLine(ex.Message);
+            ErrorMessage = ex.Message;
+            Console.WriteLine($"[Google] {ex.GetType().Name}: {ex.Message}");
         }
         finally
         {

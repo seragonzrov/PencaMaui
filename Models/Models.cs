@@ -173,6 +173,7 @@ public class PrediccionResponseDto
     public int GolesLocal { get; set; }
     public int GolesVisitante { get; set; }
     public DateTime FechaPartido { get; set; }
+    public string? Fase { get; set; }
 
     public Prediccion ToPrediccion(string pencaId) => new Prediccion
     {
@@ -180,10 +181,12 @@ public class PrediccionResponseDto
         PencaId = pencaId,
         GolesLocal = GolesLocal,
         GolesVisitante = GolesVisitante,
+        Guardado = !string.IsNullOrEmpty(Id) && Id != "00000000-0000-0000-0000-000000000000",
         CierrePrediccion = FechaPartido,
         Partido = new Partido
         {
             Id = PartidoId,
+            Fase = Fase,
             EquipoLocal = new Equipo { Nombre = EquipoLocal },
             EquipoVisitante = new Equipo { Nombre = EquipoVisitante }
         }
