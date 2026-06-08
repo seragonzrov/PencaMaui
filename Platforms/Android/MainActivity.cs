@@ -2,8 +2,11 @@ using Android.App;
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
+using AndroidX.Core.App;
+using AndroidX.Core.Content;
 using Firebase;
 using Plugin.Firebase.Auth.Google;
+using Plugin.Firebase.CloudMessaging;
 using Plugin.Firebase.Core.Platforms.Android;
 
 namespace PencaMaui
@@ -19,6 +22,8 @@ namespace PencaMaui
         const string FirebaseStorageBucket = "tupencauyproject.firebasestorage.app";
         const string GoogleWebClientId = "820549641519-jctbpa8906f4ed4a561lhrsp2mr1eoq1.apps.googleusercontent.com";
 
+        const string NotificationChannelId = "pencamaui.general";
+
         protected override void OnCreate(Bundle? savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -33,12 +38,38 @@ namespace PencaMaui
 
             CrossFirebase.Initialize(this, firebaseOptions);
             FirebaseAuthGoogleImplementation.Initialize(GoogleWebClientId);
+
+            CrearCanalDeNotificaciones();
+            PedirPermisoDeNotificacionesSiHaceFalta();
         }
 
         protected override void OnActivityResult(int requestCode, Result resultCode, Intent? data)
         {
             base.OnActivityResult(requestCode, resultCode, data);
             FirebaseAuthGoogleImplementation.HandleActivityResultAsync(requestCode, resultCode, data);
+        }
+
+        void CrearCanalDeNotificaciones()
+        {
+            // Los canales de notificación recién existen desde Android 8 (API 26)
+            if (Build.VERSION.SdkInt >= BuildVersionCodes.O)
+            {
+                var notificationManager = (NotificationManager)GetSystemService(NotificationService)!;
+                var channel = new NotificationChannel(NotificationChannelId, "General", NotificationImportance.Default);
+                notificationManager.CreateNotificationChannel(channel);
+            }
+
+            FirebaseCloudMessagingImplementation.ChannelId = NotificationChannelId;
+        }
+
+        void PedirPermisoDeNotificacionesSiHaceFalta()
+        {
+            // POST_NOTIFICATIONS solo se pide en runtime a partir de Android 13 (API 33)
+            if (Build.VERSION.SdkInt < BuildVersionCodes.Tiramisu)
+                return;
+
+            if (ContextCompat.CheckSelfPermission(this, Android.Manifest.Permission.PostNotifications) != Permission.Granted)
+                ActivityCompat.RequestPermissions(this, new[] { Android.Manifest.Permission.PostNotifications }, 0);
         }
     }
 }

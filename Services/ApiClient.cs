@@ -113,6 +113,11 @@ public class ApiClient
             var json = JsonSerializer.Serialize(body);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
             var response = await _http.PostAsync(endpoint, content);
+            if (!response.IsSuccessStatusCode)
+            {
+                var responseBody = await response.Content.ReadAsStringAsync();
+                Console.WriteLine($"[ApiClient] POST {endpoint} {(int)response.StatusCode}: {responseBody}");
+            }
             return response.IsSuccessStatusCode;
         }
         catch (Exception ex)

@@ -1,5 +1,8 @@
 using PencaMaui.Models;
 using System.Text.Json;
+#if ANDROID
+using Plugin.Firebase.CloudMessaging;
+#endif
 
 namespace PencaMaui.Services;
 
@@ -14,6 +17,17 @@ public class AuthService
     public AuthService(ApiClient api)
     {
         _api = api;
+
+#if ANDROID
+        if (CrossFirebaseCloudMessaging.IsSupported)
+        {
+            CrossFirebaseCloudMessaging.Current.TokenChanged += async (_, e) =>
+            {
+                if (await EstaLogueadoAsync())
+                    await RegistrarFcmTokenAsync(e.Token);
+            };
+        }
+#endif
     }
 
     public async Task<(bool success, string error)> LoginAsync(string email, string password)
@@ -78,7 +92,55 @@ public class AuthService
         await SecureStorage.SetAsync(UserNombreKey, auth.Nombre);
         await SecureStorage.SetAsync(UserEmailKey, email);
         _api.SetToken(auth.Token);
+
+#if ANDROID
+        await RegistrarFcmTokenActualAsync();
+#endif
     }
+
+#if ANDROID
+    private async Task RegistrarFcmTokenActualAsync()
+    {
+        try
+        {
+            var jwt = await SecureStorage.GetAsync(TokenKey);
+            if (!string.IsNullOrEmpty(jwt))
+            {
+                var parts = jwt.Split('.');
+                var payload = parts[1].PadRight(parts[1].Length + (4 - parts[1].Length % 4) % 4, '=');
+                var json = System.Text.Encoding.UTF8.GetString(Convert.FromBase64String(payload));
+                Console.WriteLine($"[FCM] JWT claims: {json}");
+            }
+
+            Console.WriteLine($"[FCM] IsSupported = {CrossFirebaseCloudMessaging.IsSupported}");
+            if (!CrossFirebaseCloudMessaging.IsSupported) return;
+
+            var token = await CrossFirebaseCloudMessaging.Current.GetTokenAsync();
+            Console.WriteLine($"[FCM] Token obtenido: {token}");
+            await RegistrarFcmTokenAsync(token);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"[FCM] Error al obtener el token: {ex.GetType().Name}: {ex.Message}");
+        }
+    }
+
+    private async Task RegistrarFcmTokenAsync(string fcmToken)
+    {
+        if (string.IsNullOrWhiteSpace(fcmToken)) return;
+
+        try
+        {
+            var dto = new RegistrarFcmTokenRequestDto { FcmToken = fcmToken };
+            var ok = await _api.PostAsync("/api/Usuario/registrar/fcm-token", dto);
+            Console.WriteLine($"[FCM] Registro en backend: {(ok ? "OK" : "FALLÓ")}");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"[FCM] Error al registrar el token: {ex.GetType().Name}: {ex.Message}");
+        }
+    }
+#endif
 
     private (string id, string email) ParseJwt(string token)
     {
@@ -129,6 +191,11 @@ public class AuthService
         catch { }
 
         _api.SetToken(token);
+
+#if ANDROID
+        await RegistrarFcmTokenActualAsync();
+#endif
+
         return true;
     }
 

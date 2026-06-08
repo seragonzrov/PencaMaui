@@ -13,6 +13,11 @@ public class FirebaseLoginRequest
     public string IdToken { get; set; } = string.Empty;
 }
 
+public class RegistrarFcmTokenRequestDto
+{
+    public string FcmToken { get; set; } = string.Empty;
+}
+
 public class RegistroUsuarioRequestDto
 {
     public string Nombre { get; set; } = string.Empty;
