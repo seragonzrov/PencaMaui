@@ -9,16 +9,32 @@ public class ApiClient
 {
     private readonly HttpClient _http;
     private const string BaseUrl = "https://tupenca-api-production-ed1d.up.railway.app";
+    private const string SitioPrefKey = "sitio_url_propia";
+    private const string SitioPorDefecto = "penca.com";
 
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
         PropertyNameCaseInsensitive = true
     };
 
+    public string SitioActual { get; private set; }
+
     public ApiClient()
     {
         _http = new HttpClient { BaseAddress = new Uri(BaseUrl) };
-        _http.DefaultRequestHeaders.Add("X-Sitio", "penca.com");
+        SitioActual = Preferences.Get(SitioPrefKey, SitioPorDefecto);
+        _http.DefaultRequestHeaders.Add("X-Sitio", SitioActual);
+    }
+
+    public void SetSitio(string urlPropia)
+    {
+        if (string.IsNullOrWhiteSpace(urlPropia) || urlPropia == SitioActual)
+            return;
+
+        SitioActual = urlPropia;
+        Preferences.Set(SitioPrefKey, urlPropia);
+        _http.DefaultRequestHeaders.Remove("X-Sitio");
+        _http.DefaultRequestHeaders.Add("X-Sitio", urlPropia);
     }
 
     public void SetToken(string token)
@@ -91,7 +107,7 @@ public class ApiClient
                 {
                     var responseBody = await response.Content.ReadAsStringAsync();
                     Console.WriteLine($"[ApiClient] POST {endpoint} {sc}: {responseBody}");
-                    return (default, sc, response.ReasonPhrase ?? "Error");
+                    return (default, sc, responseBody);
                 }
             }
             catch (Exception ex)

@@ -1,5 +1,7 @@
+using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using PencaMaui.Models;
 using PencaMaui.Services;
 using Plugin.Firebase.Auth.Google;
 
@@ -8,20 +10,52 @@ namespace PencaMaui.ViewModels;
 public partial class LoginViewModel : ObservableObject
 {
     private readonly AuthService _auth;
+    private readonly ApiClient _api;
     private static bool _yaHuboSesion = false;
+    private bool _cargandoSitios;
 
     [ObservableProperty] string saludo = "Bienvenido";
     [ObservableProperty] string email = string.Empty;
     [ObservableProperty] string password = string.Empty;
     [ObservableProperty] bool isBusy;
     [ObservableProperty] string errorMessage = string.Empty;
+    [ObservableProperty] ObservableCollection<SitioDto> sitios = new();
+    [ObservableProperty] SitioDto? sitioSeleccionado;
 
-    public LoginViewModel(AuthService auth)
+    public LoginViewModel(AuthService auth, ApiClient api)
     {
         _auth = auth;
+        _api = api;
         Saludo = _yaHuboSesion ? "Bienvenido de nuevo" : "Bienvenido";
         _yaHuboSesion = true;
         ErrorMessage = string.Empty;
+
+        _ = CargarSitiosAsync();
+    }
+
+    async Task CargarSitiosAsync()
+    {
+        _cargandoSitios = true;
+        try
+        {
+            var lista = await _api.GetAsync<List<SitioDto>>("/api/Sitio/publicos");
+            if (lista == null || lista.Count == 0)
+                return;
+
+            Sitios = new ObservableCollection<SitioDto>(lista);
+            SitioSeleccionado = Sitios.FirstOrDefault(s => s.UrlPropia == _api.SitioActual)
+                                ?? Sitios.FirstOrDefault();
+        }
+        finally
+        {
+            _cargandoSitios = false;
+        }
+    }
+
+    partial void OnSitioSeleccionadoChanged(SitioDto? value)
+    {
+        if (!_cargandoSitios && value != null)
+            _api.SetSitio(value.UrlPropia);
     }
 
     [RelayCommand]

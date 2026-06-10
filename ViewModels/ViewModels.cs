@@ -150,6 +150,7 @@ public partial class PerfilViewModel : ObservableObject
 {
     private readonly AuthService _auth;
     private readonly UsuarioService _usuarioService;
+    private bool _cargando;
 
     [ObservableProperty] string nombre = string.Empty;
     [ObservableProperty] string email = string.Empty;
@@ -157,9 +158,9 @@ public partial class PerfilViewModel : ObservableObject
     [ObservableProperty] bool isBusy;
 
     // Notificaciones
-    [ObservableProperty] bool notifRecordatorio = true;
-    [ObservableProperty] bool notifResultado = true;
-    [ObservableProperty] bool notifResumenSemanal = true;
+    [ObservableProperty] bool notifRecordatorio;
+    [ObservableProperty] bool notifResultado;
+    [ObservableProperty] bool notifResumenSemanal;
     [ObservableProperty] bool notifPush = true;
 
     public PerfilViewModel(AuthService auth, UsuarioService usuarioService)
@@ -172,10 +173,48 @@ public partial class PerfilViewModel : ObservableObject
     async Task CargarAsync()
     {
         IsBusy = true;
-        Nombre = await _auth.GetUserNombreAsync() ?? "";
-        Email = await _auth.GetUserEmailAsync() ?? "";
-        Iniciales = Nombre.Length >= 2 ? Nombre[..2].ToUpper() : Nombre.ToUpper();
-        IsBusy = false;
+        _cargando = true;
+        try
+        {
+            Nombre = await _auth.GetUserNombreAsync() ?? "";
+            Email = await _auth.GetUserEmailAsync() ?? "";
+            Iniciales = Nombre.Length >= 2 ? Nombre[..2].ToUpper() : Nombre.ToUpper();
+
+            var userId = await _auth.GetUserIdAsync();
+            if (!string.IsNullOrEmpty(userId))
+            {
+                var prefs = await _usuarioService.ObtenerPreferenciasNotificacionAsync(userId);
+                if (prefs != null)
+                {
+                    NotifRecordatorio = prefs.NotifRecordatorioPrediccion;
+                    NotifResultado = prefs.NotifResultadoPartido;
+                    NotifResumenSemanal = prefs.NotifResumenSemanal;
+                }
+            }
+        }
+        finally
+        {
+            _cargando = false;
+            IsBusy = false;
+        }
+    }
+
+    partial void OnNotifRecordatorioChanged(bool value)
+    {
+        if (!_cargando) _ = _usuarioService.ActualizarPreferenciasNotificacionAsync(
+            value, NotifResultado, NotifResumenSemanal);
+    }
+
+    partial void OnNotifResultadoChanged(bool value)
+    {
+        if (!_cargando) _ = _usuarioService.ActualizarPreferenciasNotificacionAsync(
+            NotifRecordatorio, value, NotifResumenSemanal);
+    }
+
+    partial void OnNotifResumenSemanalChanged(bool value)
+    {
+        if (!_cargando) _ = _usuarioService.ActualizarPreferenciasNotificacionAsync(
+            NotifRecordatorio, NotifResultado, value);
     }
 
     [RelayCommand]

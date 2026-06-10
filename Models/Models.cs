@@ -35,6 +35,15 @@ public class AuthResponse
     public DateTime Expira { get; set; }
 }
 
+// ─── Sitio ──────────────────────────────────────────────────────────────────
+
+public class SitioDto
+{
+    public string Id { get; set; } = string.Empty;
+    public string Nombre { get; set; } = string.Empty;
+    public string UrlPropia { get; set; } = string.Empty;
+}
+
 // ─── Penca ──────────────────────────────────────────────────────────────────
 
 public class Penca
@@ -226,6 +235,9 @@ public class Usuario
     public string Email { get; set; } = string.Empty;
     public string? Foto { get; set; }
     public int Rol { get; set; }
+    public bool NotifRecordatorioPrediccion { get; set; }
+    public bool NotifResultadoPartido { get; set; }
+    public bool NotifResumenSemanal { get; set; }
 
     public string Iniciales => Nombre.Length >= 2
         ? Nombre[..2].ToUpper()
@@ -237,4 +249,11 @@ public class UsuarioRequestDto
     public string Id { get; set; } = string.Empty;
     public string Nombre { get; set; } = string.Empty;
     public string? Foto { get; set; }
+}
+
+public class ActualizarPreferenciasNotificacionRequestDto
+{
+    public bool NotifRecordatorioPrediccion { get; set; }
+    public bool NotifResultadoPartido { get; set; }
+    public bool NotifResumenSemanal { get; set; }
 }
