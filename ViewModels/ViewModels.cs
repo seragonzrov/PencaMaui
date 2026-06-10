@@ -161,7 +161,6 @@ public partial class PerfilViewModel : ObservableObject
     [ObservableProperty] bool notifRecordatorio;
     [ObservableProperty] bool notifResultado;
     [ObservableProperty] bool notifResumenSemanal;
-    [ObservableProperty] bool notifPush = true;
 
     public PerfilViewModel(AuthService auth, UsuarioService usuarioService)
     {

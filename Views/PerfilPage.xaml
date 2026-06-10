@@ -89,17 +89,6 @@
                         <Switch Grid.Column="1" IsToggled="{Binding NotifResumenSemanal}"
                                 OnColor="#1D9E75" />
                     </Grid>
-                    <BoxView HeightRequest="0.5" BackgroundColor="#F0F0F0" />
-
-                    <!-- Push -->
-                    <Grid ColumnDefinitions="*,Auto" Padding="0,10">
-                        <VerticalStackLayout Grid.Column="0" Spacing="2">
-                            <Label Text="Notificaciones push" FontSize="13" TextColor="#1A1A1A" />
-                            <Label Text="En la app móvil" FontSize="11" TextColor="#999" />
-                        </VerticalStackLayout>
-                        <Switch Grid.Column="1" IsToggled="{Binding NotifPush}"
-                                OnColor="#1D9E75" />
-                    </Grid>
 
                 </VerticalStackLayout>
             </Border>
