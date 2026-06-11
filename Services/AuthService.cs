@@ -73,10 +73,15 @@ public class AuthService
             CodigoInvitacion = codigoInvitacion
         };
 
-        var result = await _api.PostAsync<AuthResponse>("/api/Auth/registro/usuario", dto);
+        var (result, statusCode, error) = await _api.PostDetailedAsync<AuthResponse>("/api/Auth/registro/usuario", dto);
 
         if (result == null || string.IsNullOrEmpty(result.Token))
-            return (false, "Error al registrar usuario");
+        {
+            var mensaje = string.IsNullOrEmpty(error)
+                ? "Tu cuenta fue creada. Un administrador debe aprobarla antes de que puedas ingresar."
+                : error;
+            return (false, mensaje);
+        }
 
         await GuardarSesionAsync(result, email);
         return (true, string.Empty);
