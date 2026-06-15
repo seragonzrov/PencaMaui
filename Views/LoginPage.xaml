@@ -13,7 +13,7 @@
             <!-- Header verde -->
             <Grid Grid.Row="0" BackgroundColor="#1D9E75" Padding="24,48,24,24">
                 <VerticalStackLayout VerticalOptions="End" Spacing="4">
-                    <Label Text="tupenca.uy" FontSize="28" FontAttributes="Bold"
+                    <Label Text="TuPenca" FontSize="28" FontAttributes="Bold"
                            TextColor="White" />
                     <Label Text="Competí con tus amigos en cada partido"
                            FontSize="13" TextColor="#C8F0E4" />

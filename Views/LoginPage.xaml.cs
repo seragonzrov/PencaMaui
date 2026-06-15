@@ -14,7 +14,11 @@ public partial class LoginPage : ContentPage
     {
         base.OnAppearing();
         if (BindingContext is LoginViewModel vm)
+        {
             vm.ErrorMessage = string.Empty;
+            if (vm.SitioSeleccionado == null)
+                _ = vm.CargarSitiosAsync();
+        }
         if (Window != null)
             Window.Resumed += OnResumed;
     }

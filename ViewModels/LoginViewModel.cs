@@ -30,21 +30,24 @@ public partial class LoginViewModel : ObservableObject
         _yaHuboSesion = true;
         ErrorMessage = string.Empty;
 
-        _ = CargarSitiosAsync();
+        _ = CargarSitiosAsync(); // pre-carga; OnAppearing reintenta si falló
     }
 
-    async Task CargarSitiosAsync()
+    public async Task CargarSitiosAsync()
     {
         _cargandoSitios = true;
         try
         {
+            Console.WriteLine($"[Sitios] Cargando sitios con X-Sitio={_api.SitioActual}");
             var lista = await _api.GetAsync<List<SitioDto>>("/api/Sitio/publicos");
+            Console.WriteLine($"[Sitios] Resultado: {(lista == null ? "null" : lista.Count + " sitios")}");
             if (lista == null || lista.Count == 0)
                 return;
 
             Sitios = new ObservableCollection<SitioDto>(lista);
             SitioSeleccionado = Sitios.FirstOrDefault(s => s.UrlPropia == _api.SitioActual)
                                 ?? Sitios.FirstOrDefault();
+            Console.WriteLine($"[Sitios] Seleccionado: {SitioSeleccionado?.Nombre} ({SitioSeleccionado?.UrlPropia})");
         }
         finally
         {

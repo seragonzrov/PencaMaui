@@ -64,4 +64,11 @@ public partial class PerfilPage : ContentPage
         if (BindingContext is PerfilViewModel vm)
             vm.CargarCommand.Execute(null);
     }
+
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+        if (BindingContext is PerfilViewModel vm)
+            vm.CancelarCierreCommand.Execute(null);
+    }
 }

@@ -161,6 +161,7 @@ public partial class PerfilViewModel : ObservableObject
     [ObservableProperty] bool notifRecordatorio;
     [ObservableProperty] bool notifResultado;
     [ObservableProperty] bool notifResumenSemanal;
+    [ObservableProperty] bool confirmandoCierre;
 
     public PerfilViewModel(AuthService auth, UsuarioService usuarioService)
     {
@@ -217,16 +218,16 @@ public partial class PerfilViewModel : ObservableObject
     }
 
     [RelayCommand]
-    async Task CerrarSesionAsync()
-    {
-        bool confirmar = await Shell.Current.DisplayAlertAsync(
-            "Cerrar sesión", "¿Seguro que querés salir?", "Sí", "Cancelar");
+    void CerrarSesion() => ConfirmandoCierre = true;
 
-        if (confirmar)
-        {
-            await _auth.LogoutAsync();
-            await Shell.Current.GoToAsync("//login");
-        }
+    [RelayCommand]
+    void CancelarCierre() => ConfirmandoCierre = false;
+
+    [RelayCommand]
+    async Task ConfirmarCierreAsync()
+    {
+        await _auth.LogoutAsync();
+        await Shell.Current.GoToAsync("//login");
     }
 
     [RelayCommand]
