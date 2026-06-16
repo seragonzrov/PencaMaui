@@ -104,6 +104,28 @@
         </VerticalStackLayout>
     </ScrollView>
 
+    <!-- Overlay datos guardados -->
+    <Grid IsVisible="{Binding ConfirmacionGuardadoVisible}" BackgroundColor="#80000000"
+          InputTransparent="False">
+        <Grid.GestureRecognizers>
+            <TapGestureRecognizer Command="{Binding CerrarConfirmacionGuardadoCommand}" />
+        </Grid.GestureRecognizers>
+        <Border BackgroundColor="White" StrokeShape="RoundRectangle 16"
+                StrokeThickness="0" Padding="24" Margin="32,0"
+                VerticalOptions="Center">
+            <VerticalStackLayout Spacing="16">
+                <Label Text="Perfil" FontSize="17" FontAttributes="Bold"
+                       TextColor="#1A1A1A" HorizontalOptions="Center" />
+                <Label Text="{Binding MensajeGuardado}" FontSize="14"
+                       TextColor="#666" HorizontalOptions="Center" />
+                <Button Text="OK"
+                        Command="{Binding CerrarConfirmacionGuardadoCommand}"
+                        BackgroundColor="#1D9E75" TextColor="White"
+                        CornerRadius="8" HeightRequest="44" FontSize="14" />
+            </VerticalStackLayout>
+        </Border>
+    </Grid>
+
     <!-- Overlay cerrar sesión -->
     <Grid IsVisible="{Binding ConfirmandoCierre}" BackgroundColor="#80000000"
           InputTransparent="False">

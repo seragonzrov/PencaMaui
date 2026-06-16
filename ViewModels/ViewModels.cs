@@ -162,6 +162,8 @@ public partial class PerfilViewModel : ObservableObject
     [ObservableProperty] bool notifResultado;
     [ObservableProperty] bool notifResumenSemanal;
     [ObservableProperty] bool confirmandoCierre;
+    [ObservableProperty] bool confirmacionGuardadoVisible;
+    [ObservableProperty] string mensajeGuardado = string.Empty;
 
     public PerfilViewModel(AuthService auth, UsuarioService usuarioService)
     {
@@ -218,6 +220,9 @@ public partial class PerfilViewModel : ObservableObject
     }
 
     [RelayCommand]
+    void CerrarConfirmacionGuardado() => ConfirmacionGuardadoVisible = false;
+
+    [RelayCommand]
     void CerrarSesion() => ConfirmandoCierre = true;
 
     [RelayCommand]
@@ -243,9 +248,11 @@ public partial class PerfilViewModel : ObservableObject
         if (ok)
         {
             await _auth.ActualizarNombreAsync(Nombre);
-            await Shell.Current.DisplayAlertAsync("Perfil", "Cambios guardados", "OK");
+            MensajeGuardado = "Cambios guardados";
         }
         else
-            await Shell.Current.DisplayAlertAsync("Error", "No se pudo guardar", "OK");
+            MensajeGuardado = "No se pudo guardar";
+
+        ConfirmacionGuardadoVisible = true;
     }
 }

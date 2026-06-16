@@ -21,6 +21,7 @@ public partial class LoginViewModel : ObservableObject
     [ObservableProperty] string errorMessage = string.Empty;
     [ObservableProperty] ObservableCollection<SitioDto> sitios = new();
     [ObservableProperty] SitioDto? sitioSeleccionado;
+    [ObservableProperty] bool sitioOverlayVisible;
 
     public LoginViewModel(AuthService auth, ApiClient api)
     {
@@ -59,6 +60,19 @@ public partial class LoginViewModel : ObservableObject
     {
         if (!_cargandoSitios && value != null)
             _api.SetSitio(value.UrlPropia);
+    }
+
+    [RelayCommand]
+    void AbrirSelectorSitio() => SitioOverlayVisible = true;
+
+    [RelayCommand]
+    void CerrarSelectorSitio() => SitioOverlayVisible = false;
+
+    [RelayCommand]
+    void ElegirSitio(SitioDto sitio)
+    {
+        SitioSeleccionado = sitio;
+        SitioOverlayVisible = false;
     }
 
     [RelayCommand]
