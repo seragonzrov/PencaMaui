@@ -150,6 +150,7 @@ public partial class PerfilViewModel : ObservableObject
 {
     private readonly AuthService _auth;
     private readonly UsuarioService _usuarioService;
+    private bool _cargando;
 
     [ObservableProperty] string nombre = string.Empty;
     [ObservableProperty] string email = string.Empty;
@@ -157,10 +158,12 @@ public partial class PerfilViewModel : ObservableObject
     [ObservableProperty] bool isBusy;
 
     // Notificaciones
-    [ObservableProperty] bool notifRecordatorio = true;
-    [ObservableProperty] bool notifResultado = true;
-    [ObservableProperty] bool notifResumenSemanal = true;
-    [ObservableProperty] bool notifPush = true;
+    [ObservableProperty] bool notifRecordatorio;
+    [ObservableProperty] bool notifResultado;
+    [ObservableProperty] bool notifResumenSemanal;
+    [ObservableProperty] bool confirmandoCierre;
+    [ObservableProperty] bool confirmacionGuardadoVisible;
+    [ObservableProperty] string mensajeGuardado = string.Empty;
 
     public PerfilViewModel(AuthService auth, UsuarioService usuarioService)
     {
@@ -172,23 +175,64 @@ public partial class PerfilViewModel : ObservableObject
     async Task CargarAsync()
     {
         IsBusy = true;
-        Nombre = await _auth.GetUserNombreAsync() ?? "";
-        Email = await _auth.GetUserEmailAsync() ?? "";
-        Iniciales = Nombre.Length >= 2 ? Nombre[..2].ToUpper() : Nombre.ToUpper();
-        IsBusy = false;
+        _cargando = true;
+        try
+        {
+            Nombre = await _auth.GetUserNombreAsync() ?? "";
+            Email = await _auth.GetUserEmailAsync() ?? "";
+            Iniciales = Nombre.Length >= 2 ? Nombre[..2].ToUpper() : Nombre.ToUpper();
+
+            var userId = await _auth.GetUserIdAsync();
+            if (!string.IsNullOrEmpty(userId))
+            {
+                var prefs = await _usuarioService.ObtenerPreferenciasNotificacionAsync(userId);
+                if (prefs != null)
+                {
+                    NotifRecordatorio = prefs.NotifRecordatorioPrediccion;
+                    NotifResultado = prefs.NotifResultadoPartido;
+                    NotifResumenSemanal = prefs.NotifResumenSemanal;
+                }
+            }
+        }
+        finally
+        {
+            _cargando = false;
+            IsBusy = false;
+        }
+    }
+
+    partial void OnNotifRecordatorioChanged(bool value)
+    {
+        if (!_cargando) _ = _usuarioService.ActualizarPreferenciasNotificacionAsync(
+            value, NotifResultado, NotifResumenSemanal);
+    }
+
+    partial void OnNotifResultadoChanged(bool value)
+    {
+        if (!_cargando) _ = _usuarioService.ActualizarPreferenciasNotificacionAsync(
+            NotifRecordatorio, value, NotifResumenSemanal);
+    }
+
+    partial void OnNotifResumenSemanalChanged(bool value)
+    {
+        if (!_cargando) _ = _usuarioService.ActualizarPreferenciasNotificacionAsync(
+            NotifRecordatorio, NotifResultado, value);
     }
 
     [RelayCommand]
-    async Task CerrarSesionAsync()
-    {
-        bool confirmar = await Shell.Current.DisplayAlertAsync(
-            "Cerrar sesión", "¿Seguro que querés salir?", "Sí", "Cancelar");
+    void CerrarConfirmacionGuardado() => ConfirmacionGuardadoVisible = false;
 
-        if (confirmar)
-        {
-            await _auth.LogoutAsync();
-            await Shell.Current.GoToAsync("//login");
-        }
+    [RelayCommand]
+    void CerrarSesion() => ConfirmandoCierre = true;
+
+    [RelayCommand]
+    void CancelarCierre() => ConfirmandoCierre = false;
+
+    [RelayCommand]
+    async Task ConfirmarCierreAsync()
+    {
+        await _auth.LogoutAsync();
+        await Shell.Current.GoToAsync("//login");
     }
 
     [RelayCommand]
@@ -204,9 +248,11 @@ public partial class PerfilViewModel : ObservableObject
         if (ok)
         {
             await _auth.ActualizarNombreAsync(Nombre);
-            await Shell.Current.DisplayAlertAsync("Perfil", "Cambios guardados", "OK");
+            MensajeGuardado = "Cambios guardados";
         }
         else
-            await Shell.Current.DisplayAlertAsync("Error", "No se pudo guardar", "OK");
+            MensajeGuardado = "No se pudo guardar";
+
+        ConfirmacionGuardadoVisible = true;
     }
 }

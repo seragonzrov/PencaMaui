@@ -69,4 +69,22 @@ public class UsuarioService
         var dto = new UsuarioRequestDto { Id = id, Nombre = nombre, Foto = foto };
         return await _api.PostAsync("/api/Usuario/actualizar", dto);
     }
+
+    public async Task<ActualizarPreferenciasNotificacionRequestDto?> ObtenerPreferenciasNotificacionAsync(string usuarioId)
+    {
+        return await _api.GetAsync<ActualizarPreferenciasNotificacionRequestDto>(
+            $"/api/Usuario/{usuarioId}/notificaciones/preferencias");
+    }
+
+    public async Task<bool> ActualizarPreferenciasNotificacionAsync(
+        bool recordatorio, bool resultado, bool resumenSemanal)
+    {
+        var dto = new ActualizarPreferenciasNotificacionRequestDto
+        {
+            NotifRecordatorioPrediccion = recordatorio,
+            NotifResultadoPartido = resultado,
+            NotifResumenSemanal = resumenSemanal
+        };
+        return await _api.PostAsync("/api/Usuario/notificaciones/preferencias", dto);
+    }
 }

@@ -7,6 +7,7 @@
              Title="Mi Perfil"
              BackgroundColor="#F5F5F5">
 
+    <Grid>
     <ScrollView>
         <VerticalStackLayout Padding="16" Spacing="14">
 
@@ -89,17 +90,6 @@
                         <Switch Grid.Column="1" IsToggled="{Binding NotifResumenSemanal}"
                                 OnColor="#1D9E75" />
                     </Grid>
-                    <BoxView HeightRequest="0.5" BackgroundColor="#F0F0F0" />
-
-                    <!-- Push -->
-                    <Grid ColumnDefinitions="*,Auto" Padding="0,10">
-                        <VerticalStackLayout Grid.Column="0" Spacing="2">
-                            <Label Text="Notificaciones push" FontSize="13" TextColor="#1A1A1A" />
-                            <Label Text="En la app móvil" FontSize="11" TextColor="#999" />
-                        </VerticalStackLayout>
-                        <Switch Grid.Column="1" IsToggled="{Binding NotifPush}"
-                                OnColor="#1D9E75" />
-                    </Grid>
 
                 </VerticalStackLayout>
             </Border>
@@ -113,4 +103,56 @@
 
         </VerticalStackLayout>
     </ScrollView>
+
+    <!-- Overlay datos guardados -->
+    <Grid IsVisible="{Binding ConfirmacionGuardadoVisible}" BackgroundColor="#80000000"
+          InputTransparent="False">
+        <Grid.GestureRecognizers>
+            <TapGestureRecognizer Command="{Binding CerrarConfirmacionGuardadoCommand}" />
+        </Grid.GestureRecognizers>
+        <Border BackgroundColor="White" StrokeShape="RoundRectangle 16"
+                StrokeThickness="0" Padding="24" Margin="32,0"
+                VerticalOptions="Center">
+            <VerticalStackLayout Spacing="16">
+                <Label Text="Perfil" FontSize="17" FontAttributes="Bold"
+                       TextColor="#1A1A1A" HorizontalOptions="Center" />
+                <Label Text="{Binding MensajeGuardado}" FontSize="14"
+                       TextColor="#666" HorizontalOptions="Center" />
+                <Button Text="OK"
+                        Command="{Binding CerrarConfirmacionGuardadoCommand}"
+                        BackgroundColor="#1D9E75" TextColor="White"
+                        CornerRadius="8" HeightRequest="44" FontSize="14" />
+            </VerticalStackLayout>
+        </Border>
+    </Grid>
+
+    <!-- Overlay cerrar sesión -->
+    <Grid IsVisible="{Binding ConfirmandoCierre}" BackgroundColor="#80000000"
+          InputTransparent="False">
+        <Grid.GestureRecognizers>
+            <TapGestureRecognizer Command="{Binding CancelarCierreCommand}" />
+        </Grid.GestureRecognizers>
+        <Border BackgroundColor="White" StrokeShape="RoundRectangle 16"
+                StrokeThickness="0" Padding="24" Margin="32,0"
+                VerticalOptions="Center">
+            <VerticalStackLayout Spacing="16">
+                <Label Text="Cerrar sesión" FontSize="17" FontAttributes="Bold"
+                       TextColor="#1A1A1A" HorizontalOptions="Center" />
+                <Label Text="¿Seguro que querés salir?" FontSize="14"
+                       TextColor="#666" HorizontalOptions="Center" />
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                    <Button Grid.Column="0" Text="Cancelar"
+                            Command="{Binding CancelarCierreCommand}"
+                            BackgroundColor="#F0F0F0" TextColor="#333"
+                            CornerRadius="8" HeightRequest="44" FontSize="14" />
+                    <Button Grid.Column="1" Text="Salir"
+                            Command="{Binding ConfirmarCierreCommand}"
+                            BackgroundColor="#E53935" TextColor="White"
+                            CornerRadius="8" HeightRequest="44" FontSize="14" />
+                </Grid>
+            </VerticalStackLayout>
+        </Border>
+    </Grid>
+
+    </Grid>
 </ContentPage>

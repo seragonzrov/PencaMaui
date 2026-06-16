@@ -50,28 +50,32 @@
                                                                Spacing="6"
                                                                HorizontalOptions="Center"
                                                                VerticalOptions="Center">
-                                            <Border BackgroundColor="#F0F0F0"
-                                                    StrokeThickness="0"
+                                            <Border BackgroundColor="White"
+                                                    Stroke ="#1D9E75"
+                                                    StrokeThickness="1"
                                                     StrokeShape="RoundRectangle 8"
                                                     WidthRequest="48" HeightRequest="48">
                                                 <Entry Text="{Binding GolesLocal}"
                                                        Keyboard="Numeric"
                                                        HorizontalTextAlignment="Center"
                                                        FontSize="20" FontAttributes="Bold"
+                                                       TextColor="#1D9E75"
                                                        BackgroundColor="Transparent"
                                                        IsEnabled="{Binding Cerrado, Converter={StaticResource InvertBoolConverter}}" />
                                             </Border>
                                             <Label Text="–" FontSize="18"
                                                    TextColor="#999"
                                                    VerticalOptions="Center" />
-                                            <Border BackgroundColor="#F0F0F0"
-                                                    StrokeThickness="0"
+                                            <Border BackgroundColor="White"
+                                                    Stroke ="#1D9E75"
+                                                    StrokeThickness="1"
                                                     StrokeShape="RoundRectangle 8"
                                                     WidthRequest="48" HeightRequest="48">
                                                 <Entry Text="{Binding GolesVisitante}"
                                                        Keyboard="Numeric"
                                                        HorizontalTextAlignment="Center"
                                                        FontSize="20" FontAttributes="Bold"
+                                                       TextColor="#1D9E75"
                                                        BackgroundColor="Transparent"
                                                        IsEnabled="{Binding Cerrado, Converter={StaticResource InvertBoolConverter}}" />
                                             </Border>
@@ -91,20 +95,20 @@
                                                 BackgroundColor="#E1F5EE"
                                                 StrokeThickness="0"
                                                 StrokeShape="RoundRectangle 12"
-                                                Padding="8,3"
+                                                Padding="15"
                                                 HorizontalOptions="Start"
                                                 IsVisible="{Binding Guardado}">
-                                            <Label Text="✓ guardado" FontSize="11"
+                                            <Label Text="✓ Guardado" FontSize="11"
                                                    TextColor="#0F6E56" />
                                         </Border>
                                         <Border Grid.Column="0"
                                                 BackgroundColor="#FAEEDA"
                                                 StrokeThickness="0"
                                                 StrokeShape="RoundRectangle 12"
-                                                Padding="8,3"
+                                                Padding="15"
                                                 HorizontalOptions="Start"
                                                 IsVisible="{Binding Cerrado}">
-                                            <Label Text="cerrado" FontSize="11"
+                                            <Label Text="Cerrado" FontSize="11"
                                                    TextColor="#633806" />
                                         </Border>
                                         <Button Grid.Column="1"

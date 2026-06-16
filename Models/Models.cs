@@ -13,6 +13,11 @@ public class FirebaseLoginRequest
     public string IdToken { get; set; } = string.Empty;
 }
 
+public class RegistrarFcmTokenRequestDto
+{
+    public string FcmToken { get; set; } = string.Empty;
+}
+
 public class RegistroUsuarioRequestDto
 {
     public string Nombre { get; set; } = string.Empty;
@@ -28,6 +33,15 @@ public class AuthResponse
     public string Nombre { get; set; } = string.Empty;
     public string Rol { get; set; } = string.Empty;
     public DateTime Expira { get; set; }
+}
+
+// ─── Sitio ──────────────────────────────────────────────────────────────────
+
+public class SitioDto
+{
+    public string Id { get; set; } = string.Empty;
+    public string Nombre { get; set; } = string.Empty;
+    public string UrlPropia { get; set; } = string.Empty;
 }
 
 // ─── Penca ──────────────────────────────────────────────────────────────────
@@ -173,6 +187,7 @@ public class PrediccionResponseDto
     public int GolesLocal { get; set; }
     public int GolesVisitante { get; set; }
     public DateTime FechaPartido { get; set; }
+    public string? Fase { get; set; }
 
     public Prediccion ToPrediccion(string pencaId) => new Prediccion
     {
@@ -180,10 +195,12 @@ public class PrediccionResponseDto
         PencaId = pencaId,
         GolesLocal = GolesLocal,
         GolesVisitante = GolesVisitante,
+        Guardado = !string.IsNullOrEmpty(Id) && Id != "00000000-0000-0000-0000-000000000000",
         CierrePrediccion = FechaPartido,
         Partido = new Partido
         {
             Id = PartidoId,
+            Fase = Fase,
             EquipoLocal = new Equipo { Nombre = EquipoLocal },
             EquipoVisitante = new Equipo { Nombre = EquipoVisitante }
         }
@@ -218,6 +235,9 @@ public class Usuario
     public string Email { get; set; } = string.Empty;
     public string? Foto { get; set; }
     public int Rol { get; set; }
+    public bool NotifRecordatorioPrediccion { get; set; }
+    public bool NotifResultadoPartido { get; set; }
+    public bool NotifResumenSemanal { get; set; }
 
     public string Iniciales => Nombre.Length >= 2
         ? Nombre[..2].ToUpper()
@@ -229,4 +249,11 @@ public class UsuarioRequestDto
     public string Id { get; set; } = string.Empty;
     public string Nombre { get; set; } = string.Empty;
     public string? Foto { get; set; }
+}
+
+public class ActualizarPreferenciasNotificacionRequestDto
+{
+    public bool NotifRecordatorioPrediccion { get; set; }
+    public bool NotifResultadoPartido { get; set; }
+    public bool NotifResumenSemanal { get; set; }
 }
