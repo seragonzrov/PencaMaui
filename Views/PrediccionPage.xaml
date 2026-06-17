@@ -89,28 +89,40 @@
                                                HorizontalTextAlignment="Center" />
                                     </Grid>
 
+                                    <!-- Resultado real (partido jugado) -->
+                                    <Grid ColumnDefinitions="*,Auto" IsVisible="{Binding PartidoJugado}">
+                                        <Label Grid.Column="0" FontSize="13" TextColor="#1A1A1A">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span Text="Resultado: " TextColor="#666" />
+                                                    <Span Text="{Binding ResultadoTexto}" FontAttributes="Bold" />
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+                                        <Label Grid.Column="1" Text="{Binding PuntosObtenidos, StringFormat='+{0} pts'}"
+                                               FontSize="13" FontAttributes="Bold" TextColor="#0F6E56" />
+                                    </Grid>
+
                                     <!-- Footer: estado + botón guardar -->
                                     <Grid ColumnDefinitions="*,Auto">
-                                        <Border Grid.Column="0"
-                                                BackgroundColor="#E1F5EE"
-                                                StrokeThickness="0"
-                                                StrokeShape="RoundRectangle 12"
-                                                Padding="15"
-                                                HorizontalOptions="Start"
-                                                IsVisible="{Binding Guardado}">
-                                            <Label Text="✓ Guardado" FontSize="11"
-                                                   TextColor="#0F6E56" />
-                                        </Border>
-                                        <Border Grid.Column="0"
-                                                BackgroundColor="#FAEEDA"
-                                                StrokeThickness="0"
-                                                StrokeShape="RoundRectangle 12"
-                                                Padding="15"
-                                                HorizontalOptions="Start"
-                                                IsVisible="{Binding Cerrado}">
-                                            <Label Text="Cerrado" FontSize="11"
-                                                   TextColor="#633806" />
-                                        </Border>
+                                        <HorizontalStackLayout Grid.Column="0" Spacing="8">
+                                            <Border BackgroundColor="#E1F5EE"
+                                                    StrokeThickness="0"
+                                                    StrokeShape="RoundRectangle 12"
+                                                    Padding="15"
+                                                    IsVisible="{Binding MostrarGuardado}">
+                                                <Label Text="Abierto" FontSize="11"
+                                                       TextColor="#0F6E56" />
+                                            </Border>
+                                            <Border BackgroundColor="#FAEEDA"
+                                                    StrokeThickness="0"
+                                                    StrokeShape="RoundRectangle 12"
+                                                    Padding="15"
+                                                    IsVisible="{Binding Cerrado}">
+                                                <Label Text="Cerrado" FontSize="11"
+                                                       TextColor="#633806" />
+                                            </Border>
+                                        </HorizontalStackLayout>
                                         <Button Grid.Column="1"
                                                 Text="Guardar"
                                                 BackgroundColor="#1D9E75"

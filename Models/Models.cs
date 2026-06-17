@@ -156,7 +156,17 @@ public class Prediccion
     public int GolesVisitante { get; set; }
     public bool Guardado { get; set; }
     public bool Cerrado { get; set; }
+    public bool PartidoJugado { get; set; }
+    public int? ResultadoLocal { get; set; }
+    public int? ResultadoVisitante { get; set; }
+    public int PuntosObtenidos { get; set; }
     public DateTime? CierrePrediccion { get; set; }
+
+    public string ResultadoTexto => PartidoJugado
+        ? $"{ResultadoLocal} - {ResultadoVisitante}"
+        : string.Empty;
+
+    public bool MostrarGuardado => Guardado && !Cerrado;
 
     public string TiempoRestante
     {
@@ -178,24 +188,43 @@ public class Prediccion
             : Color.FromArgb("#555555");
 }
 
-public class PrediccionResponseDto
+public class HistorialPencaResponseDto
 {
-    public string Id { get; set; } = string.Empty;
+    public string PencaId { get; set; } = string.Empty;
+    public string NombrePenca { get; set; } = string.Empty;
+    public int PuntosTotales { get; set; }
+    public int PartidosPredichos { get; set; }
+    public int PartidosConResultado { get; set; }
+    public List<HistorialPartidoDto> Partidos { get; set; } = new();
+}
+
+public class HistorialPartidoDto
+{
     public string PartidoId { get; set; } = string.Empty;
-    public string EquipoLocal { get; set; } = string.Empty;
-    public string EquipoVisitante { get; set; } = string.Empty;
-    public int GolesLocal { get; set; }
-    public int GolesVisitante { get; set; }
     public DateTime FechaPartido { get; set; }
     public string? Fase { get; set; }
+    public string EquipoLocal { get; set; } = string.Empty;
+    public string EquipoVisitante { get; set; } = string.Empty;
+    public bool Predijo { get; set; }
+    public int? PrediccionLocal { get; set; }
+    public int? PrediccionVisitante { get; set; }
+    public int? ResultadoLocal { get; set; }
+    public int? ResultadoVisitante { get; set; }
+    public bool PartidoJugado { get; set; }
+    public int PuntosObtenidos { get; set; }
 
     public Prediccion ToPrediccion(string pencaId) => new Prediccion
     {
-        Id = Id,
+        Id = PartidoId,
         PencaId = pencaId,
-        GolesLocal = GolesLocal,
-        GolesVisitante = GolesVisitante,
-        Guardado = !string.IsNullOrEmpty(Id) && Id != "00000000-0000-0000-0000-000000000000",
+        GolesLocal = PrediccionLocal ?? 0,
+        GolesVisitante = PrediccionVisitante ?? 0,
+        Guardado = Predijo,
+        Cerrado = PartidoJugado || FechaPartido <= DateTime.Now,
+        PartidoJugado = PartidoJugado,
+        ResultadoLocal = ResultadoLocal,
+        ResultadoVisitante = ResultadoVisitante,
+        PuntosObtenidos = PuntosObtenidos,
         CierrePrediccion = FechaPartido,
         Partido = new Partido
         {

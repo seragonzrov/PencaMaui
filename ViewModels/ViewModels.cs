@@ -232,6 +232,12 @@ public partial class PerfilViewModel : ObservableObject
     async Task ConfirmarCierreAsync()
     {
         await _auth.LogoutAsync();
+
+        foreach (var item in Shell.Current.Items)
+            foreach (var section in item.Items)
+                if (section.Navigation.NavigationStack.Count > 1)
+                    await section.Navigation.PopToRootAsync(false);
+
         await Shell.Current.GoToAsync("//login");
     }
 
