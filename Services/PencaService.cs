@@ -40,8 +40,8 @@ public class PrediccionService
 
     public async Task<List<Prediccion>> ObtenerPrediccionesAsync(string pencaId)
     {
-        var result = await _api.GetAsync<List<PrediccionResponseDto>>($"/api/Prediccion/{pencaId}");
-        return result?.Select(p => p.ToPrediccion(pencaId)).ToList() ?? new List<Prediccion>();
+        var result = await _api.GetAsync<HistorialPencaResponseDto>($"/api/Prediccion/{pencaId}/historial");
+        return result?.Partidos.Select(p => p.ToPrediccion(pencaId)).ToList() ?? new List<Prediccion>();
     }
 
     public async Task<bool> GuardarPrediccionAsync(PrediccionRequestDto dto)

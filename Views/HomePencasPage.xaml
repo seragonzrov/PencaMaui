@@ -37,7 +37,8 @@
                                         <Border Grid.Column="1"
                                                 BackgroundColor="{Binding EstadoColor}"
                                                 StrokeShape="RoundRectangle 12"
-                                                StrokeThickness="0" Padding="8,3">
+                                                StrokeThickness="0" Padding="8,3"
+                                                VerticalOptions="Start">
                                             <Label Text="{Binding EstadoTexto}"
                                                    FontSize="11" TextColor="White"
                                                    FontAttributes="Bold" />
