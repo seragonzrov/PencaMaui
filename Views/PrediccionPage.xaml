@@ -25,6 +25,59 @@
                                     Padding="14" Margin="0,0,0,10">
                                 <VerticalStackLayout Spacing="10">
 
+                                    <!-- Penca todavia abierta: vista simplificada -->
+                                    <VerticalStackLayout Spacing="6"
+                                            IsVisible="{Binding Source={RelativeSource AncestorType={x:Type vm:PrediccionViewModel}}, Path=PencaAbierta}">
+                                        <Label Text="{Binding Partido.Fase}"
+                                               FontSize="11" TextColor="#999" />
+                                        <Label Text="{Binding EquiposTexto}"
+                                               FontSize="15" FontAttributes="Bold"
+                                               TextColor="#1A1A1A" />
+                                        <Label Text="{Binding FechaHoraTexto}"
+                                               FontSize="12" TextColor="#666" />
+                                        <Label Text="Las predicciones se habilitan cuando el torneo arranque."
+                                               FontSize="11" TextColor="#999"
+                                               Margin="0,4,0,0" />
+                                    </VerticalStackLayout>
+
+                                    <!-- Penca finalizada: vista simplificada con resultado y prediccion -->
+                                    <VerticalStackLayout Spacing="6"
+                                            IsVisible="{Binding Source={RelativeSource AncestorType={x:Type vm:PrediccionViewModel}}, Path=PencaFinalizada}">
+                                        <Label Text="{Binding Partido.Fase}"
+                                               FontSize="11" TextColor="#999" />
+                                        <Label Text="{Binding EquiposTexto}"
+                                               FontSize="15" FontAttributes="Bold"
+                                               TextColor="#1A1A1A" />
+                                        <Label Text="{Binding FechaHoraTexto}"
+                                               FontSize="12" TextColor="#666" />
+                                        <Label Text="La penca terminó. Revisá la tabla y los ganadores."
+                                               FontSize="11" TextColor="#999"
+                                               Margin="0,4,0,0" />
+                                        <Label FontSize="13" TextColor="#1A1A1A" IsVisible="{Binding PartidoJugado}">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span Text="Resultado: " TextColor="#666" />
+                                                    <Span Text="{Binding ResultadoTexto}" FontAttributes="Bold" />
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+                                        <Label FontSize="13" TextColor="#1A1A1A" IsVisible="{Binding Guardado}">
+                                            <Label.FormattedText>
+                                                <FormattedString>
+                                                    <Span Text="Tu predicción: " TextColor="#666" />
+                                                    <Span Text="{Binding MiPrediccionTexto}" FontAttributes="Bold" />
+                                                </FormattedString>
+                                            </Label.FormattedText>
+                                        </Label>
+                                        <Label Text="{Binding PuntosObtenidos, StringFormat='+{0} pts'}"
+                                               FontSize="13" FontAttributes="Bold" TextColor="#0F6E56"
+                                               IsVisible="{Binding MostrarPuntos}" />
+                                    </VerticalStackLayout>
+
+                                    <!-- Penca en curso: vista de prediccion completa -->
+                                    <VerticalStackLayout Spacing="10"
+                                            IsVisible="{Binding Source={RelativeSource AncestorType={x:Type vm:PrediccionViewModel}}, Path=PencaEnCurso}">
+
                                     <!-- Fase + tiempo -->
                                     <Grid ColumnDefinitions="*,Auto">
                                         <Label Grid.Column="0"
@@ -111,7 +164,7 @@
                                                     StrokeShape="RoundRectangle 12"
                                                     Padding="15"
                                                     IsVisible="{Binding MostrarGuardado}">
-                                                <Label Text="Abierto" FontSize="11"
+                                                <Label Text="Guardado" FontSize="11"
                                                        TextColor="#0F6E56" />
                                             </Border>
                                             <Border BackgroundColor="#FAEEDA"
@@ -135,6 +188,8 @@
                                                 CommandParameter="{Binding .}"
                                                 Command="{Binding Source={RelativeSource AncestorType={x:Type vm:PrediccionViewModel}}, Path=GuardarPrediccionCommand}" />
                                     </Grid>
+
+                                    </VerticalStackLayout>
 
                                 </VerticalStackLayout>
                             </Border>

@@ -59,8 +59,8 @@ public class Penca
 
     public string EstadoTexto => Estado switch
     {
-        0 => "Abierta",
-        1 => "Cerrada",
+        0 => "Inscripto",
+        1 => "En curso",
         2 => "Finalizada",
         _ => "Desconocido"
     };
@@ -72,6 +72,8 @@ public class Penca
         2 => Color.FromArgb("#888888"),
         _ => Color.FromArgb("#888888")
     };
+
+    public bool PosicionesDisponible => Estado != 0;
 }
 
 public class PlantillaPenca
@@ -167,6 +169,16 @@ public class Prediccion
         : string.Empty;
 
     public bool MostrarGuardado => Guardado && !Cerrado;
+
+    public bool MostrarPuntos => PartidoJugado && Guardado;
+
+    public string EquiposTexto => $"{Partido?.EquipoLocal?.Nombre} vs {Partido?.EquipoVisitante?.Nombre}";
+
+    public string MiPrediccionTexto => Guardado
+        ? $"{GolesLocal} - {GolesVisitante}"
+        : string.Empty;
+
+    public string FechaHoraTexto => CierrePrediccion?.ToString("d/M/yyyy HH:mm") ?? string.Empty;
 
     public string TiempoRestante
     {

@@ -33,7 +33,9 @@ public partial class HomePencasViewModel : ObservableObject
         Bienvenida = $"Hola, {NombreUsuario} 👋";
 
         var lista = await _pencaService.ObtenerPencasAsync();
-        Pencas = new ObservableCollection<Penca>(lista);
+        var inscripciones = await _pencaService.ObtenerInscripcionesAsync();
+        var inscriptas = lista.Where(p => inscripciones.Contains(p.Id)).ToList();
+        Pencas = new ObservableCollection<Penca>(inscriptas);
         IsBusy = false;
     }
 
@@ -96,16 +98,21 @@ public partial class PosicionesViewModel : ObservableObject
 public partial class PrediccionViewModel : ObservableObject
 {
     private readonly PrediccionService _prediccionService;
+    private readonly PencaService _pencaService;
 
     [ObservableProperty] string pencaId = string.Empty;
     [ObservableProperty] string nombrePenca = string.Empty;
     [ObservableProperty] ObservableCollection<Prediccion> predicciones = new();
     [ObservableProperty] bool isBusy;
     [ObservableProperty] string mensajeEstado = string.Empty;
+    [ObservableProperty] bool pencaAbierta;
+    [ObservableProperty] bool pencaEnCurso;
+    [ObservableProperty] bool pencaFinalizada;
 
-    public PrediccionViewModel(PrediccionService prediccionService)
+    public PrediccionViewModel(PrediccionService prediccionService, PencaService pencaService)
     {
         _prediccionService = prediccionService;
+        _pencaService = pencaService;
     }
 
     [RelayCommand]
@@ -113,8 +120,15 @@ public partial class PrediccionViewModel : ObservableObject
     {
         if (string.IsNullOrEmpty(PencaId)) return;
         IsBusy = true;
-        var lista = await _prediccionService.ObtenerPrediccionesAsync(PencaId);
-        Predicciones = new ObservableCollection<Prediccion>(lista);
+
+        var pencaTask = _pencaService.ObtenerPencaAsync(PencaId);
+        var prediccionesTask = _prediccionService.ObtenerPrediccionesAsync(PencaId);
+        await Task.WhenAll(pencaTask, prediccionesTask);
+
+        PencaAbierta = pencaTask.Result?.Estado == 0;
+        PencaEnCurso = pencaTask.Result?.Estado == 1;
+        PencaFinalizada = pencaTask.Result?.Estado == 2;
+        Predicciones = new ObservableCollection<Prediccion>(prediccionesTask.Result);
         IsBusy = false;
     }
 

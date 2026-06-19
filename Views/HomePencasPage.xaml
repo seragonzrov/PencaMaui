@@ -66,6 +66,7 @@
                                                 BackgroundColor="White" TextColor="#1D9E75"
                                                 BorderColor="#1D9E75" BorderWidth="1"
                                                 CornerRadius="8" HeightRequest="40" FontSize="13"
+                                                IsVisible="{Binding PosicionesDisponible}"
                                                 CommandParameter="{Binding .}"
                                                 Command="{Binding Source={RelativeSource AncestorType={x:Type vm:HomePencasViewModel}}, Path=VerPosicionesCommand}" />
                                     </Grid>
