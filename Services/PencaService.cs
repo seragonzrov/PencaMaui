@@ -17,6 +17,12 @@ public class PencaService
         return result ?? new List<Penca>();
     }
 
+    public async Task<List<string>> ObtenerInscripcionesAsync()
+    {
+        var result = await _api.GetAsync<List<string>>("/api/Pago/mis-inscripciones");
+        return result ?? new List<string>();
+    }
+
     public async Task<Penca?> ObtenerPencaAsync(string id)
     {
         return await _api.GetAsync<Penca>($"/api/Penca/{id}");
