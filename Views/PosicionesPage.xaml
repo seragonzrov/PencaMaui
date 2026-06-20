@@ -45,19 +45,18 @@
             </Border>
 
             <!-- Encabezado tabla -->
-            <Grid ColumnDefinitions="32,36,*,44,44,56" Padding="8,4" BackgroundColor="Transparent">
+            <Grid ColumnDefinitions="32,36,*,64,64" Padding="8,4" BackgroundColor="Transparent">
                 <Label Grid.Column="0" Text="#" FontSize="11" TextColor="#999" FontAttributes="Bold" />
                 <Label Grid.Column="2" Text="Participante" FontSize="11" TextColor="#999" FontAttributes="Bold" />
-                <Label Grid.Column="3" Text="Ac." FontSize="11" TextColor="#999" FontAttributes="Bold" HorizontalOptions="End" />
-                <Label Grid.Column="4" Text="Ex." FontSize="11" TextColor="#999" FontAttributes="Bold" HorizontalOptions="End" />
-                <Label Grid.Column="5" Text="Pts" FontSize="11" TextColor="#999" FontAttributes="Bold" HorizontalOptions="End" />
+                <Label Grid.Column="3" Text="Jugados" FontSize="11" TextColor="#999" FontAttributes="Bold" HorizontalOptions="End" />
+                <Label Grid.Column="4" Text="Puntos" FontSize="11" TextColor="#999" FontAttributes="Bold" HorizontalOptions="End" />
             </Grid>
 
             <!-- Lista posiciones -->
             <CollectionView ItemsSource="{Binding Posiciones}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="models:PosicionEntry">
-                        <Grid ColumnDefinitions="32,36,*,44,44,56"
+                        <Grid ColumnDefinitions="32,36,*,64,64"
                               Padding="8,10" BackgroundColor="{Binding ColorFila}">
 
                             <!-- Posición -->
@@ -84,18 +83,13 @@
                                    VerticalOptions="Center"
                                    FontAttributes="{Binding EsUsuarioActual, Converter={StaticResource BoolToFontAttrConverter}}" />
 
-                            <!-- Aciertos -->
+                            <!-- Jugados -->
                             <Label Grid.Column="3" Text="{Binding Aciertos}"
                                    FontSize="13" TextColor="#666"
                                    HorizontalOptions="End" VerticalOptions="Center" />
 
-                            <!-- Exactos -->
-                            <Label Grid.Column="4" Text="{Binding Exactos}"
-                                   FontSize="13" TextColor="#666"
-                                   HorizontalOptions="End" VerticalOptions="Center" />
-
                             <!-- Puntos -->
-                            <Label Grid.Column="5" Text="{Binding Puntos}"
+                            <Label Grid.Column="4" Text="{Binding Puntos}"
                                    FontSize="14" FontAttributes="Bold"
                                    TextColor="{Binding ColorPuntos}"
                                    HorizontalOptions="End" VerticalOptions="Center" />

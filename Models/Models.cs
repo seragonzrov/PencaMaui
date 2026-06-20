@@ -92,7 +92,6 @@ public class PosicionEntry
     public string NombreUsuario { get; set; } = string.Empty;
     public int Puntos { get; set; }
     public int Aciertos { get; set; }
-    public int Exactos { get; set; }
     public bool EsUsuarioActual { get; set; }
 
     public string Iniciales => NombreUsuario.Length >= 2
@@ -133,8 +132,7 @@ public class PosicionResponseDto
         UsuarioId = UsuarioId,
         NombreUsuario = NombreUsuario,
         Puntos = PuntosTotales,
-        Aciertos = PartidosPredichos,
-        Exactos = 0
+        Aciertos = PartidosPredichos
     };
 }
 
