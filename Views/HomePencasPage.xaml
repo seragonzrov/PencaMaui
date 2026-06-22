@@ -9,16 +9,21 @@
              BackgroundColor="#F5F5F5">
 
     <RefreshView Command="{Binding CargarCommand}" IsRefreshing="{Binding IsBusy}">
-        <ScrollView>
-            <VerticalStackLayout Padding="16" Spacing="12">
+        <Grid RowDefinitions="Auto,*" Padding="16" RowSpacing="12">
 
-                <!-- Bienvenida -->
-                <Label Text="{Binding Bienvenida}" FontSize="20"
-                       FontAttributes="Bold" TextColor="#1A1A1A" Margin="0,8,0,0" />
+            <!-- Bienvenida -->
+            <Label Grid.Row="0" Text="{Binding Bienvenida}" FontSize="20"
+                   FontAttributes="Bold" TextColor="#1A1A1A" Margin="0,8,0,0" />
 
-                <!-- Lista de pencas -->
-                <CollectionView ItemsSource="{Binding Pencas}"
-                                EmptyView="No hay pencas disponibles">
+            <!-- Lista de pencas -->
+                <CollectionView Grid.Row="1" ItemsSource="{Binding Pencas}">
+                    <CollectionView.EmptyView>
+                        <Label Text="No hay te has inscripto a ninguna penca aún. ¡Únete a una en un sitio y comienza a predecir!"
+                               TextColor="#999" FontSize="14"
+                               HorizontalOptions="Center" VerticalOptions="Center"
+                               HorizontalTextAlignment="Center"
+                               Margin="0,40" />
+                    </CollectionView.EmptyView>
                     <CollectionView.ItemsLayout>
                         <LinearItemsLayout Orientation="Vertical" ItemSpacing="10" />
                     </CollectionView.ItemsLayout>
@@ -77,7 +82,6 @@
                     </CollectionView.ItemTemplate>
                 </CollectionView>
 
-            </VerticalStackLayout>
-        </ScrollView>
+        </Grid>
     </RefreshView>
 </ContentPage>

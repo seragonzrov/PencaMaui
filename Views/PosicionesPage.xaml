@@ -11,11 +11,10 @@
              <Shell.ForegroundColor>White</Shell.ForegroundColor>
              <Shell.TitleColor>White</Shell.TitleColor>
 
-    <ScrollView>
-        <VerticalStackLayout Padding="16" Spacing="12">
+    <Grid RowDefinitions="Auto,Auto,*" Padding="16" RowSpacing="12">
 
             <!-- Mi posición (card verde) -->
-            <Border BackgroundColor="#E1F5EE" Stroke="#5DCAA5" StrokeThickness="1.5"
+            <Border Grid.Row="0" BackgroundColor="#E1F5EE" Stroke="#5DCAA5" StrokeThickness="1.5"
                     StrokeShape="RoundRectangle 12" Padding="16"
                     IsVisible="{Binding MiPosicion, Converter={StaticResource NullToBoolConverter}}">
                 <Grid ColumnDefinitions="60,*,Auto">
@@ -45,7 +44,7 @@
             </Border>
 
             <!-- Encabezado tabla -->
-            <Grid ColumnDefinitions="32,36,*,64,64" Padding="8,4" BackgroundColor="Transparent">
+            <Grid Grid.Row="1" ColumnDefinitions="32,36,*,64,64" Padding="8,4" BackgroundColor="Transparent">
                 <Label Grid.Column="0" Text="#" FontSize="11" TextColor="#999" FontAttributes="Bold" />
                 <Label Grid.Column="2" Text="Participante" FontSize="11" TextColor="#999" FontAttributes="Bold" />
                 <Label Grid.Column="3" Text="Jugados" FontSize="11" TextColor="#999" FontAttributes="Bold" HorizontalOptions="End" />
@@ -53,7 +52,14 @@
             </Grid>
 
             <!-- Lista posiciones -->
-            <CollectionView ItemsSource="{Binding Posiciones}">
+            <CollectionView Grid.Row="2" ItemsSource="{Binding Posiciones}">
+                <CollectionView.EmptyView>
+                    <Label Text="¡Todavía nadie ha hecho una predicción!"
+                           TextColor="#999" FontSize="14"
+                           HorizontalOptions="Center" VerticalOptions="Center"
+                           HorizontalTextAlignment="Center"
+                           Margin="0,40" />
+                </CollectionView.EmptyView>
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="models:PosicionEntry">
                         <Grid ColumnDefinitions="32,36,*,64,64"
@@ -98,6 +104,5 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
 
-        </VerticalStackLayout>
-    </ScrollView>
+    </Grid>
 </ContentPage>
