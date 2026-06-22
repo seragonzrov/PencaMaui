@@ -13,11 +13,14 @@
 
     <Grid RowDefinitions="*,Auto">
 
-        <ScrollView Grid.Row="0">
-            <VerticalStackLayout Padding="16" Spacing="10">
-
-                <CollectionView ItemsSource="{Binding Predicciones}"
-                                EmptyView="No hay partidos disponibles">
+        <CollectionView Grid.Row="0" Margin="16" ItemsSource="{Binding Predicciones}">
+                    <CollectionView.EmptyView>
+                        <Label Text="No hay partidos disponibles"
+                               TextColor="#999" FontSize="14"
+                               HorizontalOptions="Center" VerticalOptions="Center"
+                               HorizontalTextAlignment="Center"
+                               Margin="0,40" />
+                    </CollectionView.EmptyView>
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="models:Prediccion">
                             <Border BackgroundColor="White" Stroke="#E8E8E8"
@@ -196,9 +199,6 @@
                         </DataTemplate>
                     </CollectionView.ItemTemplate>
                 </CollectionView>
-
-            </VerticalStackLayout>
-        </ScrollView>
 
         <!-- Mensaje estado bottom -->
         <Border Grid.Row="1" BackgroundColor="#F0F0F0" Padding="16,12"
