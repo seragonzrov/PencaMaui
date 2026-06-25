@@ -122,13 +122,18 @@ public partial class PrediccionViewModel : ObservableObject
         IsBusy = true;
 
         var pencaTask = _pencaService.ObtenerPencaAsync(PencaId);
-        var prediccionesTask = _prediccionService.ObtenerPrediccionesAsync(PencaId);
-        await Task.WhenAll(pencaTask, prediccionesTask);
+        var historialTask = _prediccionService.ObtenerHistorialAsync(PencaId);
+        var margenTask = _pencaService.ObtenerTiempoLimitePrediccionAsync(PencaId);
+        await Task.WhenAll(pencaTask, historialTask, margenTask);
 
         PencaAbierta = pencaTask.Result?.Estado == 0;
         PencaEnCurso = pencaTask.Result?.Estado == 1;
         PencaFinalizada = pencaTask.Result?.Estado == 2;
-        Predicciones = new ObservableCollection<Prediccion>(prediccionesTask.Result);
+
+        var lista = historialTask.Result?.Partidos
+            .Select(p => p.ToPrediccion(PencaId, margenTask.Result))
+            .ToList() ?? new List<Prediccion>();
+        Predicciones = new ObservableCollection<Prediccion>(lista);
         IsBusy = false;
     }
 

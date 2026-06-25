@@ -46,6 +46,11 @@ public class SitioDto
 
 // ─── Penca ──────────────────────────────────────────────────────────────────
 
+public class TiempoLimitePrediccionDto
+{
+    public int TiempoLimitePrevioMinutos { get; set; }
+}
+
 public class Penca
 {
     public string Id { get; set; } = string.Empty;
@@ -223,27 +228,37 @@ public class HistorialPartidoDto
     public bool PartidoJugado { get; set; }
     public int PuntosObtenidos { get; set; }
 
-    public Prediccion ToPrediccion(string pencaId) => new Prediccion
+    public Prediccion ToPrediccion(string pencaId, int margenMinutos = 0)
     {
-        Id = PartidoId,
-        PencaId = pencaId,
-        GolesLocal = PrediccionLocal ?? 0,
-        GolesVisitante = PrediccionVisitante ?? 0,
-        Guardado = Predijo,
-        Cerrado = PartidoJugado || FechaPartido <= DateTime.Now,
-        PartidoJugado = PartidoJugado,
-        ResultadoLocal = ResultadoLocal,
-        ResultadoVisitante = ResultadoVisitante,
-        PuntosObtenidos = PuntosObtenidos,
-        CierrePrediccion = FechaPartido,
-        Partido = new Partido
+        // El backend manda FechaPartido en UTC pero sin el sufijo "Z",
+        // asi que .NET la deserializa como Kind=Unspecified. Hay que marcarla
+        // explicitamente como UTC antes de convertirla a hora local, sino
+        // se compara contra DateTime.Now con el desfasaje de la zona horaria.
+        var fechaLocal = DateTime.SpecifyKind(FechaPartido, DateTimeKind.Utc).ToLocalTime();
+        var cierre = fechaLocal.AddMinutes(-margenMinutos);
+
+        return new Prediccion
         {
             Id = PartidoId,
-            Fase = Fase,
-            EquipoLocal = new Equipo { Nombre = EquipoLocal },
-            EquipoVisitante = new Equipo { Nombre = EquipoVisitante }
-        }
-    };
+            PencaId = pencaId,
+            GolesLocal = PrediccionLocal ?? 0,
+            GolesVisitante = PrediccionVisitante ?? 0,
+            Guardado = Predijo,
+            Cerrado = PartidoJugado || cierre <= DateTime.Now,
+            PartidoJugado = PartidoJugado,
+            ResultadoLocal = ResultadoLocal,
+            ResultadoVisitante = ResultadoVisitante,
+            PuntosObtenidos = PuntosObtenidos,
+            CierrePrediccion = cierre,
+            Partido = new Partido
+            {
+                Id = PartidoId,
+                Fase = Fase,
+                EquipoLocal = new Equipo { Nombre = EquipoLocal },
+                EquipoVisitante = new Equipo { Nombre = EquipoVisitante }
+            }
+        };
+    }
 }
 
 // ─── Partido ────────────────────────────────────────────────────────────────
