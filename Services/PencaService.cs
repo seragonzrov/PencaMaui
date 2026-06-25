@@ -33,6 +33,12 @@ public class PencaService
         var result = await _api.GetAsync<TablaPosicionesResponse>($"/api/Penca/{pencaId}/tabla-posiciones");
         return result?.Posiciones.Select(p => p.ToPosicionEntry()).ToList() ?? new List<PosicionEntry>();
     }
+
+    public async Task<int> ObtenerTiempoLimitePrediccionAsync(string pencaId)
+    {
+        var result = await _api.GetAsync<TiempoLimitePrediccionDto>($"/api/Penca/{pencaId}/tiempo-limite-prediccion");
+        return result?.TiempoLimitePrevioMinutos ?? 0;
+    }
 }
 
 public class PrediccionService
@@ -44,10 +50,9 @@ public class PrediccionService
         _api = api;
     }
 
-    public async Task<List<Prediccion>> ObtenerPrediccionesAsync(string pencaId)
+    public async Task<HistorialPencaResponseDto?> ObtenerHistorialAsync(string pencaId)
     {
-        var result = await _api.GetAsync<HistorialPencaResponseDto>($"/api/Prediccion/{pencaId}/historial");
-        return result?.Partidos.Select(p => p.ToPrediccion(pencaId)).ToList() ?? new List<Prediccion>();
+        return await _api.GetAsync<HistorialPencaResponseDto>($"/api/Prediccion/{pencaId}/historial");
     }
 
     public async Task<bool> GuardarPrediccionAsync(PrediccionRequestDto dto)
