@@ -1,3 +1,5 @@
+using CommunityToolkit.Mvvm.ComponentModel;
+
 namespace PencaMaui.Models;
 
 // ─── Auth ───────────────────────────────────────────────────────────────────
@@ -152,7 +154,7 @@ public class PrediccionRequestDto
     public string? EquipoGanadorPredichoId { get; set; }
 }
 
-public class Prediccion
+public class Prediccion : ObservableObject
 {
     public string Id { get; set; } = string.Empty;
     public string PencaId { get; set; } = string.Empty;
@@ -160,12 +162,23 @@ public class Prediccion
     public int GolesLocal { get; set; }
     public int GolesVisitante { get; set; }
     public bool Guardado { get; set; }
-    public bool Cerrado { get; set; }
     public bool PartidoJugado { get; set; }
     public int? ResultadoLocal { get; set; }
     public int? ResultadoVisitante { get; set; }
     public int PuntosObtenidos { get; set; }
     public DateTime? CierrePrediccion { get; set; }
+
+    public bool Cerrado => PartidoJugado ||
+        (CierrePrediccion.HasValue && CierrePrediccion.Value <= DateTime.Now);
+
+    // Refresca los bindings que dependen del reloj, sin pedir nada al servidor.
+    public void RefrescarTiempo()
+    {
+        OnPropertyChanged(nameof(Cerrado));
+        OnPropertyChanged(nameof(TiempoRestante));
+        OnPropertyChanged(nameof(ColorTiempo));
+        OnPropertyChanged(nameof(MostrarGuardado));
+    }
 
     public string ResultadoTexto => PartidoJugado
         ? $"{ResultadoLocal} - {ResultadoVisitante}"
@@ -244,7 +257,6 @@ public class HistorialPartidoDto
             GolesLocal = PrediccionLocal ?? 0,
             GolesVisitante = PrediccionVisitante ?? 0,
             Guardado = Predijo,
-            Cerrado = PartidoJugado || cierre <= DateTime.Now,
             PartidoJugado = PartidoJugado,
             ResultadoLocal = ResultadoLocal,
             ResultadoVisitante = ResultadoVisitante,

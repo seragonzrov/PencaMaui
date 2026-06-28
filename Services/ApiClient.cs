@@ -52,7 +52,15 @@ public class ApiClient
     {
         try
         {
-            var response = await _http.GetAsync(endpoint);
+            // Evita que el dispositivo o algun proxy intermedio devuelva una
+            // respuesta cacheada (ej. resultados/puntos de un partido que ya cerro).
+            var separador = endpoint.Contains('?') ? "&" : "?";
+            var url = $"{endpoint}{separador}_={DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()}";
+
+            var request = new HttpRequestMessage(HttpMethod.Get, url);
+            request.Headers.CacheControl = new CacheControlHeaderValue { NoCache = true, NoStore = true };
+
+            var response = await _http.SendAsync(request);
             response.EnsureSuccessStatusCode();
             return await response.Content.ReadFromJsonAsync<T>(JsonOptions);
         }
