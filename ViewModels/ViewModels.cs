@@ -99,6 +99,7 @@ public partial class PrediccionViewModel : ObservableObject
 {
     private readonly PrediccionService _prediccionService;
     private readonly PencaService _pencaService;
+    private IDispatcherTimer? _timer;
 
     [ObservableProperty] string pencaId = string.Empty;
     [ObservableProperty] string nombrePenca = string.Empty;
@@ -135,6 +136,28 @@ public partial class PrediccionViewModel : ObservableObject
             .ToList() ?? new List<Prediccion>();
         Predicciones = new ObservableCollection<Prediccion>(lista);
         IsBusy = false;
+
+        IniciarTimer();
+    }
+
+    void IniciarTimer()
+    {
+        if (_timer != null) return;
+
+        _timer = Application.Current!.Dispatcher.CreateTimer();
+        _timer.Interval = TimeSpan.FromSeconds(30);
+        _timer.Tick += (_, _) =>
+        {
+            foreach (var p in Predicciones)
+                p.RefrescarTiempo();
+        };
+        _timer.Start();
+    }
+
+    public void DetenerTimer()
+    {
+        _timer?.Stop();
+        _timer = null;
     }
 
     [RelayCommand]

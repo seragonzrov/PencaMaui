@@ -48,6 +48,13 @@ public partial class PrediccionPage : ContentPage
         if (BindingContext is PrediccionViewModel vm)
             vm.CargarCommand.Execute(null);
     }
+
+    protected override void OnDisappearing()
+    {
+        base.OnDisappearing();
+        if (BindingContext is PrediccionViewModel vm)
+            vm.DetenerTimer();
+    }
 }
 
 public partial class PerfilPage : ContentPage
