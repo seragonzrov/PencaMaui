@@ -100,6 +100,7 @@ public partial class PrediccionViewModel : ObservableObject
     private readonly PrediccionService _prediccionService;
     private readonly PencaService _pencaService;
     private IDispatcherTimer? _timer;
+    private List<Prediccion> _todasLasPredicciones = new();
 
     [ObservableProperty] string pencaId = string.Empty;
     [ObservableProperty] string nombrePenca = string.Empty;
@@ -109,6 +110,39 @@ public partial class PrediccionViewModel : ObservableObject
     [ObservableProperty] bool pencaAbierta;
     [ObservableProperty] bool pencaEnCurso;
     [ObservableProperty] bool pencaFinalizada;
+    [ObservableProperty] int filtroEstado = -1;  // -1=todos, 0=Abiertos, 1=Finalizados
+    [ObservableProperty] bool filtroJugados;
+
+    public bool AbiertosActivo => FiltroEstado == 0;
+    public bool FinalizadosActivo => FiltroEstado == 1;
+
+    partial void OnFiltroEstadoChanged(int value)
+    {
+        OnPropertyChanged(nameof(AbiertosActivo));
+        OnPropertyChanged(nameof(FinalizadosActivo));
+        AplicarFiltro();
+    }
+
+    partial void OnFiltroJugadosChanged(bool value) => AplicarFiltro();
+
+    void AplicarFiltro()
+    {
+        var resultado = _todasLasPredicciones.AsEnumerable();
+        if (FiltroEstado == 0) resultado = resultado.Where(p => !p.PartidoJugado);
+        else if (FiltroEstado == 1) resultado = resultado.Where(p => p.PartidoJugado);
+        if (FiltroJugados) resultado = resultado.Where(p => p.Guardado);
+        Predicciones = new ObservableCollection<Prediccion>(resultado);
+    }
+
+    [RelayCommand]
+    void FiltrarPor(string? filtro)
+    {
+        var valor = int.TryParse(filtro, out int v) ? v : -1;
+        FiltroEstado = FiltroEstado == valor ? -1 : valor;
+    }
+
+    [RelayCommand]
+    void ToggleJugados() => FiltroJugados = !FiltroJugados;
 
     public PrediccionViewModel(PrediccionService prediccionService, PencaService pencaService)
     {
@@ -131,10 +165,12 @@ public partial class PrediccionViewModel : ObservableObject
         PencaEnCurso = pencaTask.Result?.Estado == 1;
         PencaFinalizada = pencaTask.Result?.Estado == 2;
 
-        var lista = historialTask.Result?.Partidos
+        _todasLasPredicciones = historialTask.Result?.Partidos
             .Select(p => p.ToPrediccion(PencaId, margenTask.Result))
             .ToList() ?? new List<Prediccion>();
-        Predicciones = new ObservableCollection<Prediccion>(lista);
+        FiltroEstado = -1;
+        FiltroJugados = false;
+        AplicarFiltro();
         IsBusy = false;
 
         IniciarTimer();

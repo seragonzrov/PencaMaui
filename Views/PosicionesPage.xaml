@@ -54,11 +54,16 @@
             <!-- Lista posiciones -->
             <CollectionView Grid.Row="2" ItemsSource="{Binding Posiciones}">
                 <CollectionView.EmptyView>
-                    <Label Text="¡Todavía nadie ha hecho una predicción!"
-                           TextColor="#999" FontSize="14"
-                           HorizontalOptions="Center" VerticalOptions="Center"
-                           HorizontalTextAlignment="Center"
-                           Margin="0,40" />
+                    <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Margin="0,40">
+                        <Label Text="Cargando..."
+                               IsVisible="{Binding IsBusy}"
+                               TextColor="#999" FontSize="14"
+                               HorizontalTextAlignment="Center" />
+                        <Label Text="¡Todavía nadie ha hecho una predicción!"
+                               IsVisible="{Binding IsBusy, Converter={StaticResource InvertBoolConverter}}"
+                               TextColor="#999" FontSize="14"
+                               HorizontalTextAlignment="Center" />
+                    </VerticalStackLayout>
                 </CollectionView.EmptyView>
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="models:PosicionEntry">
