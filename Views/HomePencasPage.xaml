@@ -62,7 +62,7 @@
 
                                     <!-- Botones -->
                                     <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
-                                        <Button Grid.Column="0" Text="Predecir"
+                                        <Button Grid.Column="0" Text="{Binding BotonPredicirTexto}"
                                                 BackgroundColor="#1D9E75" TextColor="White"
                                                 CornerRadius="8" HeightRequest="40" FontSize="13"
                                                 CommandParameter="{Binding .}"

@@ -11,15 +11,59 @@
              <Shell.ForegroundColor>White</Shell.ForegroundColor>
              <Shell.TitleColor>White</Shell.TitleColor>
 
-    <Grid RowDefinitions="*,Auto">
+    <Grid RowDefinitions="Auto,*,Auto">
 
-        <CollectionView Grid.Row="0" Margin="16" ItemsSource="{Binding Predicciones}">
+        <!-- Filtros -->
+        <HorizontalStackLayout Grid.Row="0" Margin="16,10,16,4" Spacing="8">
+            <Button Text="Pendientes"
+                    Command="{Binding FiltrarPorCommand}" CommandParameter="0"
+                    BackgroundColor="#F0F0F0" TextColor="#555"
+                    CornerRadius="16" HeightRequest="34" FontSize="13" Padding="14,0">
+                <Button.Triggers>
+                    <DataTrigger TargetType="Button" Binding="{Binding AbiertosActivo}" Value="True">
+                        <Setter Property="BackgroundColor" Value="#1D9E75" />
+                        <Setter Property="TextColor" Value="White" />
+                    </DataTrigger>
+                </Button.Triggers>
+            </Button>
+            <Button Text="Finalizados"
+                    Command="{Binding FiltrarPorCommand}" CommandParameter="1"
+                    BackgroundColor="#F0F0F0" TextColor="#555"
+                    CornerRadius="16" HeightRequest="34" FontSize="13" Padding="14,0">
+                <Button.Triggers>
+                    <DataTrigger TargetType="Button" Binding="{Binding FinalizadosActivo}" Value="True">
+                        <Setter Property="BackgroundColor" Value="#1D9E75" />
+                        <Setter Property="TextColor" Value="White" />
+                    </DataTrigger>
+                </Button.Triggers>
+            </Button>
+            <BoxView WidthRequest="1" HeightRequest="24" BackgroundColor="#D0D0D0"
+                     VerticalOptions="Center" Margin="4,0" />
+            <Button Text="Jugados"
+                    Command="{Binding ToggleJugadosCommand}"
+                    BackgroundColor="#F0F0F0" TextColor="#555"
+                    CornerRadius="16" HeightRequest="34" FontSize="13" Padding="14,0">
+                <Button.Triggers>
+                    <DataTrigger TargetType="Button" Binding="{Binding FiltroJugados}" Value="True">
+                        <Setter Property="BackgroundColor" Value="#1D9E75" />
+                        <Setter Property="TextColor" Value="White" />
+                    </DataTrigger>
+                </Button.Triggers>
+            </Button>
+        </HorizontalStackLayout>
+
+        <CollectionView Grid.Row="1" Margin="16,4,16,16" ItemsSource="{Binding Predicciones}">
                     <CollectionView.EmptyView>
-                        <Label Text="No hay partidos disponibles"
-                               TextColor="#999" FontSize="14"
-                               HorizontalOptions="Center" VerticalOptions="Center"
-                               HorizontalTextAlignment="Center"
-                               Margin="0,40" />
+                        <VerticalStackLayout HorizontalOptions="Center" VerticalOptions="Center" Margin="0,40">
+                            <Label Text="Cargando..."
+                                   IsVisible="{Binding IsBusy}"
+                                   TextColor="#999" FontSize="14"
+                                   HorizontalTextAlignment="Center" />
+                            <Label Text="No hay partidos disponibles"
+                                   IsVisible="{Binding IsBusy, Converter={StaticResource InvertBoolConverter}}"
+                                   TextColor="#999" FontSize="14"
+                                   HorizontalTextAlignment="Center" />
+                        </VerticalStackLayout>
                     </CollectionView.EmptyView>
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="models:Prediccion">
@@ -201,7 +245,7 @@
                 </CollectionView>
 
         <!-- Mensaje estado bottom -->
-        <Border Grid.Row="1" BackgroundColor="#F0F0F0" Padding="16,12"
+        <Border Grid.Row="2" BackgroundColor="#F0F0F0" Padding="16,12"
                 IsVisible="{Binding MensajeEstado, Converter={StaticResource StringToBoolConverter}}">
             <Label Text="{Binding MensajeEstado}" FontSize="13"
                    TextColor="#333" HorizontalOptions="Center" />

@@ -81,6 +81,7 @@ public class Penca
     };
 
     public bool PosicionesDisponible => Estado != 0;
+    public string BotonPredicirTexto => Estado == 0 ? "Ver" : "Predecir";
 }
 
 public class PlantillaPenca
